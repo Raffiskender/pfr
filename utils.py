@@ -39,16 +39,6 @@ def navbar_component():
     st.markdown(component, unsafe_allow_html=True)
     js = '''
     <script>
-        // navbar elements
-        var navigationTabs = window.parent.document.getElementsByClassName("navitem");
-        var cleanNavbar = function(navigation_element) {
-            navigation_element.removeAttribute('target')
-        }
-        
-        for (var i = 0; i < navigationTabs.length; i++) {
-            cleanNavbar(navigationTabs[i]);
-        }
-        
         // Dropdown hide / show
         var dropdown = window.parent.document.getElementById("settingsDropDown");
         dropdown.onclick = function() {

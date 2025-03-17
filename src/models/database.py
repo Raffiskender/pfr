@@ -5,8 +5,15 @@ class Database :
         self.__db = sqlite3.connect("project.db")
 
     def setup(self):
-        self.execute("CREATE TABLE IF NOT EXISTS users(uid INTEGER PRIMARY KEY UNIQUE ,email VARCHAR UNIQUE, password VARCHAR)")
-        self.execute("CREATE TABLE IF NOT EXISTS logs(id INTEGER PRIMARY KEY UNIQUE ,uid INTERGER ,action VARCHAR ,value VARCHAR)")
+        self.execute("""CREATE TABLE IF NOT EXISTS users(
+                     uid INTEGER PRIMARY KEY UNIQUE,
+                     email VARCHAR UNIQUE,
+                     password VARCHAR)""")
+        self.execute("""CREATE TABLE IF NOT EXISTS logs(
+                     id INTEGER PRIMARY KEY UNIQUE,
+                     uid INTERGER,
+                     action VARCHAR,
+                     value VARCHAR)""")
         try:
             self.execute(f"INSERT INTO users (email,password) VALUES ('admin', 'admin')")
         except:

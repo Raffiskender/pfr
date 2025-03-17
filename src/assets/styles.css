@@ -9,21 +9,36 @@
     height: 55px;
 }
 
+.navlist{
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .navitem{
-    float: left;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     color: #f2f2f2 !important;
     text-align: center;
-    padding: 20px 20px;
-    text-decoration: none !important;
-    border-bottom: 2px solid transparent;
-    font-size: 14px;
+    padding: 0px 20px;
+    height: 55px;
+    /*border-bottom: 2px solid transparent;*/
+    font-size: 1.0em;
     font-family: 'Trebuchet MS', sans-serif;
+    text-decoration: none !important;
+    /* border: #f0f 1px solid; */
 }
 
 .navitem:hover{
     background-color: #333;
-    height: 55px !important;
+    /*height: 55px;*/
 }
 
 

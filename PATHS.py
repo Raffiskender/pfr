@@ -7,7 +7,7 @@ NAVBAR_PATHS = {
 }
 
 SETTINGS = {
-    'OPTIONS':'/options',
-    'DECONNEXION':'/logout'
+    'OPTIONS':'options',
+    'DECONNEXION':'logout'
 }
  

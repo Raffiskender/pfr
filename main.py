@@ -1,14 +1,14 @@
 import streamlit as st
 import utils as utl
 
-from src.views import home, goal, dataset, analysis, conclusion, options, login, logout
+from src.views import home, goal, dataset, analysis, conclusion, options, login, logout, page_404
 from src.router import get_route, redirect
 
 
 import json
 
-st.set_page_config(layout="wide", page_title='Navbar sample')
-st.set_option('deprecation.showPyplotGlobalUse', False)
+st.set_page_config(layout="centered", page_title='Anxiety attack')
+#st.set_option('deprecation.showPyplotGlobalUse', False)
 utl.inject_custom_css()
 utl.navbar_component()
 
@@ -43,9 +43,8 @@ def navigation():
     elif route == "/login":
         login.load_view()
 
-    #else:
-        #redirect("/home")
-        #home.load_view()
+    else:
+        page_404.load_view()
 
 navigation()
 
