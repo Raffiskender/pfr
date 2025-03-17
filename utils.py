@@ -16,12 +16,12 @@ def navbar_component():
 
     navbar_items = ''
     for key, value in NAVBAR_PATHS.items():
-        navbar_items += (f'<a class="navitem" href="/?nav=%2F{value}">{key}</a>')
+        navbar_items += (f'<a target="_self" class="navitem" href="/?nav=/{value}">{key}</a>')
 
     settings_items = ''
     for key, value in SETTINGS.items():
         settings_items += (
-            f'<a href="/?nav={value}" class="settingsNav">{key}</a>')
+            f'<a target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
 
     component = rf'''
             <nav class="container navbar" id="navbar">
@@ -41,8 +41,10 @@ def navbar_component():
     <script>
         // Dropdown hide / show
         var dropdown = window.parent.document.getElementById("settingsDropDown");
+        var dropWindow = window.parent.document.getElementById("myDropdown")
+        dropWindow.style.visibility = "hidden";
+
         dropdown.onclick = function() {
-            var dropWindow = window.parent.document.getElementById("myDropdown");
             if (dropWindow.style.visibility == "hidden"){
                 dropWindow.style.visibility = "visible";
             }else{

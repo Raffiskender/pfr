@@ -2,7 +2,7 @@
     font-family: 'Trebuchet MS', sans-serif;
     position: fixed;
     width: 100%;
-    background: #FF2872;
+    background: #000;
     z-index: 99999999999999999999;
     left: 0rem;
     top: 0rem;
@@ -66,14 +66,16 @@
     padding: 10px;
     font-size: 16px;
     height: 55px;
-    opacity: 0.5;
-    filter: invert(1);
+    /* opacity: 1; */
+    /* filter: invert(1); */
     cursor: pointer;
     transition: 0.3s;
 }
 
 .dropbtn:hover, .dropbtn:focus {
-    opacity:1;
+    /* opacity:0.5; */
+    background-color: rgba(221, 221, 221, 0.233);
+
 }
 
 .dropdown {
@@ -84,7 +86,6 @@
 }
 
 .dropdown-content {
-    visibility: hidden;
     position: fixed;
     border-radius: 9px;
     background-color: #333;
@@ -102,10 +103,9 @@
     display: block;
 }
 
-.dropbtn:hover{
-    background-color: rgba(221, 221, 221, 0.233);
+/* .dropbtn:hover{
     background: rgba(221, 221, 221, 0.233);
-}
+} */
 
 .dropdown a:hover {background-color: rgba(221, 221, 221, 0.233);}
 
