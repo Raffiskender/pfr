@@ -48,11 +48,11 @@ def navbar_component():
     component = rf'''
             <nav class="container navbar" id="navbar">
                 <ul class="navlist">
-                {navbar_items}
+                    {navbar_items}
                 </ul>
                 <div class="dropdown" id="settingsDropDown">
                     <img class="dropbtn" src="data:image/png;base64, {image_as_base64.decode("utf-8")}"/>
-                    <div id="myDropdown" class="dropdown-content">
+                    <div style= "visibility: hidden" id="myDropdown" class="dropdown-content">
                         {settings_items}
                     </div>
                 </div>
@@ -63,26 +63,23 @@ def navbar_component():
     js = '''
     <script>
         // Dropdown hide / show
-        var dropdown = window.parent.document.getElementById("settingsDropDown");
-        var dropWindow = window.parent.document.getElementById("myDropdown")
-        dropWindow.style.visibility = "hidden";
 
-        dropdown.onclick = function() {
+        var dropdown = window.parent.document.querySelector("img.dropbtn");
+        var dropWindow = window.parent.document.getElementById("myDropdown")
+        dropdown.onclick = () => {
             if (dropWindow.style.visibility == "hidden"){
                 dropWindow.style.visibility = "visible";
+                window.parent.document.addEventListener('click', (event) => {
+                    console.log(event.target)
+                    if (event.target != dropdown ){
+                        console.log('Perte de focus sur dropdown');
+                        dropWindow.style.visibility = "hidden";
+                        }
+                }, once=true);
             }else{
                 dropWindow.style.visibility = "hidden";
             }
         };
-        
-        var settingsNavs = window.parent.document.getElementsByClassName("settingsNav");
-        var cleanSettings = function(navigation_element) {
-            navigation_element.removeAttribute('target')
-        }
-        
-        for (var i = 0; i < settingsNavs.length; i++) {
-            cleanSettings(settingsNavs[i]);
-        }
     </script>
     '''
     html(js)
