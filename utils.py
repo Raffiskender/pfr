@@ -13,15 +13,37 @@ def inject_custom_css():
 def navbar_component():
     with open("src/assets/images/settings.png", "rb") as image_file:
         image_as_base64 = base64.b64encode(image_file.read())
-
     navbar_items = ''
-    for key, value in NAVBAR_PATHS.items():
-        navbar_items += (f'<a target="_self" class="navitem" href="/?nav=/{value}">{key}</a>')
-
     settings_items = ''
-    for key, value in SETTINGS.items():
-        settings_items += (
-            f'<a target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+
+    if st.session_state.SESSION.get('email') != "":
+        for key, value in NAVBAR_PATHS.items():
+            navbar_items += (f'<a style="visibility: visible" target="_self" class="navitem" href="/?nav=/{value}">{key}</a>')
+
+        for key, value in SETTINGS.items():
+            if (key == "CONNEXION"):
+                settings_items += (
+                f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+            else:
+                settings_items += (
+                f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                
+    else:
+        for key, value in NAVBAR_PATHS.items():
+            if (key != "ACCUEIL"):
+                navbar_items += (
+                f'<a style="display: none" target="_self" href="/?nav=/{value}" class="navitem">{key}</a>')
+            else:
+                navbar_items += (
+                f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="navitem">{key}</a>')
+
+        for key, value in SETTINGS.items():
+            if (key != "CONNEXION"):
+                settings_items += (
+                f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+            else:
+                settings_items += (
+                f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
 
     component = rf'''
             <nav class="container navbar" id="navbar">
@@ -37,6 +59,7 @@ def navbar_component():
             </nav>
             '''
     st.markdown(component, unsafe_allow_html=True)
+
     js = '''
     <script>
         // Dropdown hide / show

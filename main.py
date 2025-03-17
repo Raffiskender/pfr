@@ -1,43 +1,50 @@
 import streamlit as st
+from streamlit.components.v1 import html
 import utils as utl
 
-from src.views import home, goal, dataset, analysis, conclusion, options, login, logout, page_404
-from src.router import get_route, redirect
-
+from src.views import home, goal, dataset, analysis, conclusion, options, login, logout, page_404, page_403
+from src.router import get_route
 
 import json
 
-st.set_page_config(layout="centered", page_title='Anxiety attack')
-#st.set_option('deprecation.showPyplotGlobalUse', False)
-utl.inject_custom_css()
-utl.navbar_component()
+
+def load_session():
+    #Loading Cookies
+    with open('session.json') as json_file:
+        st.session_state.SESSION = json.load(json_file)
 
 def navigation():  
 
-    #Loading Cookies
-    with open('session.json') as json_file:
-        SESSION = json.load(json_file)
-    
-    #Non user in cookies 
-    if SESSION["email"] == "":
-        redirect("login")
-    
+
     route = get_route()
 
     if route == "/home":
         home.load_view()
     elif route == "/goal":
-        goal.load_view()
+        if st.session_state.SESSION['email'] != "":
+            goal.load_view()
+        else:
+            page_403.load_view()
     elif route == "/dataset":
-        dataset.load_view()
+        if st.session_state.SESSION['email'] != "":
+            dataset.load_view()
+        else:
+            page_403.load_view()
     elif route == "/analysis":
-        analysis.load_view()
+        if st.session_state.SESSION['email'] != "":
+            analysis.load_view()
+        else:
+            page_403.load_view()
     elif route == "/conclusion":
-        conclusion.load_view()
-
+        if st.session_state.SESSION['email'] != "":
+            conclusion.load_view()
+        else:
+            page_403.load_view()
     elif route == "/options":
-        options.load_view() 
-
+        if st.session_state.SESSION['email'] != "":
+            goal.load_view()
+        else:
+            page_403.load_view()
     elif route == "/logout":
         logout.load_view()
     elif route == "/login":
@@ -46,5 +53,10 @@ def navigation():
     else:
         page_404.load_view()
 
-navigation()
 
+st.set_page_config(layout="centered", page_title='Anxiety attack')
+load_session()
+utl.navbar_component()
+utl.inject_custom_css()
+
+navigation()
