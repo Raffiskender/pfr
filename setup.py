@@ -3,8 +3,8 @@ from src.models.session import Session
 
 import json 
 
-db = Database()
-db.setup()
+with Database() as db:
+    db.setup()
 
 s = Session("matis@datarockstars.ai", "matis")
 s.signin()

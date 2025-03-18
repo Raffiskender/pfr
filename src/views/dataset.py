@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import base64
 
 def load_view():
     st.title('Page du Jeux de données')
@@ -43,8 +44,12 @@ def load_view():
     - Gravité de la crise
                 
     """)
-
-    text = """
+    with open("src/assets/images/db_diagram.png", "rb") as image_file:
+        image_as_base64 = base64.b64encode(image_file.read())
+    
+    text = f"""
     ## présentation de la base de données
-    [image](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fdatabase&psig=AOvVaw3Q6Z9
+    Ci-dessous un diagramme de la base de données représentant les liaisons entre les tables
+    <img class="db_diagram_img" src="data:image/png;base64, {image_as_base64.decode("utf-8")}" alt="Diagramme de la base de données"/>
     """
+    st.markdown(text, unsafe_allow_html=True)

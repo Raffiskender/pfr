@@ -4,7 +4,6 @@ import time
 import json
 
 class Session:
-
     def __init__(self, email, password) -> None:
         self.logged : bool = False
         self.email : str =  email
@@ -14,29 +13,29 @@ class Session:
         return hashlib.sha256(self._password.encode(encoding="utf-32")).hexdigest()
 
     def exist(self) -> bool:
-        db = Database()
-        res = db.execute(f"Select uid from users where password='{self.hash()}' and email='{self.email}'")
-        return res.fetchone() is not None
+        with Database() as db:
+            res = db.execute("SELECT uid FROM users WHERE password=? AND email=?", (self.hash(), self.email))
+            return res.fetchone() is not None
 
     def getUID(self):
-        db = Database()
-        res = db.execute(f"Select uid from users where password='{self.hash()}' and email='{self.email}'")
-        return res.fetchone()[0]
+        with Database() as db:
+            res = db.execute("SELECT uid FROM users WHERE password=? AND email=?", (self.hash(), self.email))
+            return res.fetchone()[0]
 
     def login(self):
         if self.exist():
-            db = Database()
-            db.execute(f"INSERT INTO logs (uid, action, value) VALUES ( {self.getUID()} , \"logged\", '{int(time.time())}')")
-            db.commit()
+            with Database() as db:
+                db.execute(f"INSERT INTO logs (uid, action, value) VALUES ( ? , \"logged\", ? )", (self.getUID(), int(time.time())))
+                db.commit()
             self.logged = True
         else:
             print("User doesn't exist in DB")
 
     def signin(self):
         if not self.exist():
-            db = Database()
-            db.execute(f"INSERT INTO users (email,password) VALUES ('{self.email}', '{self.hash()}')")
-            db.commit()
+            with Database() as db:
+                db.execute(f"INSERT INTO users (email,password) VALUES ('{self.email}', '{self.hash()}')")
+                db.commit()
             print("User have been created")
             return True
         else:

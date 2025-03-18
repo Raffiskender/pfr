@@ -99,6 +99,7 @@ def navbar_component():
             <div class="dropdown" id="settingsDropDown">
                 <img class="dropbtn" src="data:image/png;base64, {image_as_base64.decode("utf-8")}"/>
                 <div style= "visibility: hidden" id="myDropdown" class="dropdown-content">
+                    {settings_items}
                 </div>
             </div>
         </ul>

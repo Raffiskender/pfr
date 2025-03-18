@@ -23,8 +23,8 @@ def login():
     else: 
         redirect("home")
     
-def sign_up(email, password):
-    res = signup(email, password)
+def sign_up():
+    res = signup(st.session_state.email, st.session_state.password)
     if not res:
         st.text("E-mail already used. Please, log in.")
     else: 

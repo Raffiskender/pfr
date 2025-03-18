@@ -103,7 +103,6 @@
     overflow: auto;
     right:0.3rem;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
 }
 
 .dropdown-content a {
@@ -131,6 +130,8 @@ iframe{
 }
 
 @media  screen and (max-width: 600px) {
+    /* burger menu was addapted from https://codepen.io/osysolyatin/pen/BaOZqog
+    Thank you Oleg ! */
 
     .navitem{
         padding: 0px 10px;
