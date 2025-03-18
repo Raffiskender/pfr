@@ -44,4 +44,7 @@ def load_view():
                 
     """)
 
-    ""
+    text = """
+    ## présentation de la base de données
+    [image](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fdatabase&psig=AOvVaw3Q6Z9
+    """
