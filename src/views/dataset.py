@@ -43,3 +43,5 @@ def load_view():
     - Gravité de la crise
                 
     """)
+
+    ""

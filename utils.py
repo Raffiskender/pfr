@@ -16,49 +16,96 @@ def navbar_component():
     navbar_items = ''
     settings_items = ''
 
+    nav_bar_items_burger = ''
+    settings_items_burger = ''
+
     if st.session_state.SESSION.get('email') != "":
         for key, value in NAVBAR_PATHS.items():
-            navbar_items += (f'<a style="visibility: visible" target="_self" class="navitem" href="/?nav=/{value}">{key}</a>')
+            #nav wide
+            navbar_items += (
+                f'<a style="display: flex" target="_self" class="navitem" href="/?nav=/{value}">{key}</a>')
+            #nav burger
+            nav_bar_items_burger += (
+                f'<li style="display: flex" class="nav__list_item"><a target="_self" class="nav__link" href="/?nav=/{value}">{navbar_items}</a></li>')
 
         for key, value in SETTINGS.items():
             if (key == "CONNEXION"):
+                #nav wide
                 settings_items += (
-                f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                    f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                #nav_burger
+                settings_items_burger += (
+                    f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
             else:
+                #nav_wide
                 settings_items += (
-                f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
-                
+                    f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                #nav burger
+                settings_items_burger += (
+                    f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+
     else:
         for key, value in NAVBAR_PATHS.items():
             if (key != "ACCUEIL"):
+                #nav wide
                 navbar_items += (
-                f'<a style="display: none" target="_self" href="/?nav=/{value}" class="navitem">{key}</a>')
+                    f'<a style="display: none" target="_self" href="/?nav=/{value}" class="navitem">{key}</a>')
+                #nav burger
+                nav_bar_items_burger += (
+                    f'<li style="display: none" class="nav__list_item"><a target="_self" class="navitem" href="/?nav=/{value}">{navbar_items}</a></li>')
             else:
+                #nav wide
                 navbar_items += (
-                f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="navitem">{key}</a>')
+                    f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="navitem">{key}</a>')
+                #nav burger
+                nav_bar_items_burger += (
+                    f'<li style="display: flex" class="nav__list_item"><a target="_self" class="navitem" href="/?nav=/{value}">{navbar_items}</a></li>')
 
         for key, value in SETTINGS.items():
             if (key != "CONNEXION"):
+                #nav wide
                 settings_items += (
-                f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                    f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                #nav burger
+                settings_items_burger += (
+                    f'<a style="display: none" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
             else:
+                #nav wide
                 settings_items += (
-                f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                    f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
+                #nav burger
+                settings_items_burger += (
+                    f'<a style="display: flex" target="_self" href="/?nav=/{value}" class="settingsNav">{key}</a>')
 
-    component = rf'''
-            <nav class="container navbar" id="navbar">
-                <ul class="navlist">
-                    {navbar_items}
-                </ul>
-                <div class="dropdown" id="settingsDropDown">
-                    <img class="dropbtn" src="data:image/png;base64, {image_as_base64.decode("utf-8")}"/>
-                    <div style= "visibility: hidden" id="myDropdown" class="dropdown-content">
-                        {settings_items}
-                    </div>
+    navigation = rf'''
+    <div>
+        <div class="nav_burger_btn">
+            <span class="burger_bar"></span>
+            <span class="burger_bar"></span>
+            <span class="burger_bar"></span>
+        </div>
+    </div>
+    <nav class="navbar_burger">
+        <ul class="burger_nav__list">
+            {navbar_items}
+            <span class="burger_separation" ></span>
+            {settings_items}
+        </ul>
+    </nav>
+
+    <nav class="container navbar_wide" id="navbar">
+        <ul class="navlist_wide">
+            {navbar_items}
+            <div class="dropdown" id="settingsDropDown">
+                <img class="dropbtn" src="data:image/png;base64, {image_as_base64.decode("utf-8")}"/>
+                <div style= "visibility: hidden" id="myDropdown" class="dropdown-content">
                 </div>
-            </nav>
-            '''
-    st.markdown(component, unsafe_allow_html=True)
+            </div>
+        </ul>
+    </nav>
+    '''
+
+    st.markdown(navigation, unsafe_allow_html=True)
 
     js = '''
     <script>
@@ -80,6 +127,15 @@ def navbar_component():
                 dropWindow.style.visibility = "hidden";
             }
         };
+
+        // Burger menu hide / show
+        var burger_btn = window.parent.document.querySelector(".nav_burger_btn");
+        var burger_nav = window.parent.document.querySelector(".navbar_burger");
+
+        burger_btn.onclick = () => {
+            burger_btn.classList.toggle("active");
+            burger_nav.classList.toggle("active");
+        }
     </script>
     '''
     html(js)
