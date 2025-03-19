@@ -7,7 +7,7 @@ class Database :
 
     def __enter__(self):
         self.__db = sqlite3.connect(self.__db_path)
-        return self.__db
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.__db:
