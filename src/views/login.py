@@ -1,9 +1,10 @@
 import streamlit as st
 from src.controllers.auth import auth
 from src.controllers.signup import signup
-
+from src.controllers.session_manager import SessionManager
 
 from src.router import redirect
+
 def load_view():
     st.title('Login')
 
@@ -15,12 +16,15 @@ def load_view():
     with col2:
         st.button('Sign up', on_click=sign_up)
 
-
 def login():
     res = auth(st.session_state.email, st.session_state.password)
     if not res:
         st.text("Wrong Account")
-    else: 
+    else:
+        session = SessionManager()
+        token = session.create_token(st.session_state.email)
+        session.set_cookie(token)
+        st.rerun()
         redirect("home")
     
 def sign_up():
@@ -30,3 +34,26 @@ def sign_up():
     else: 
         st.text("Sign up in progress...")
         redirect("home")
+
+
+
+# Initialiser le gestionnaire de session
+
+#session = SessionManager()
+# Interface Streamlit
+# st.title("🔐 Connexion avec token JWT (via SessionManager)")
+
+# if "user" not in st.session_state:
+#     st.session_state["user"] = None
+
+# token = session.get_cookie()
+# user_data = session.verify_token(token) if token else None
+
+# if user_data:
+#     st.session_state["user"] = user_data["user"]
+#     st.success(f"✅ Connecté en tant que {st.session_state['user']}")
+#     if st.button("Se déconnecter"):
+#         session.delete_cookie()
+#         st.session_state["user"] = None
+#         st.rerun()
+

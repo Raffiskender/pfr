@@ -2,6 +2,7 @@ import hashlib
 from src.models.database import Database
 import time 
 import json
+from src.controllers.session_manager import SessionManager
 
 class Session:
     def __init__(self, email, password) -> None:
@@ -14,7 +15,7 @@ class Session:
 
     def exist(self) -> bool:
         with Database() as db:
-            res = db.execute("SELECT uid FROM users WHERE password=? AND email=?", (self.hash(), self.email))
+            res = db.execute("SELECT uid, name, email, is_admin, activated FROM users WHERE password=? AND email=?", (self.hash(), self.email))
             return res.fetchone() is not None
 
     def getUID(self):
@@ -23,7 +24,12 @@ class Session:
             return res.fetchone()[0]
 
     def login(self):
-        if self.exist():
+        res = self.exist()
+        if res:
+            s = SessionManager()
+            token = s.create_token(res)
+            print(token)
+            s.set_cookie(token)
             with Database() as db:
                 db.execute(f"INSERT INTO logs (uid, action, value) VALUES ( ? , \"logged\", ? )", (self.getUID(), int(time.time())))
                 db.commit()

@@ -5,3 +5,6 @@ pandas
 scikit_learn
 seaborn
 streamlit
+dotenv
+jwt
+streamlit-cookies-manager

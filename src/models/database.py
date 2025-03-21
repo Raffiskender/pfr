@@ -17,6 +17,9 @@ class Database :
         self.execute("""CREATE TABLE IF NOT EXISTS users(
                      uid INTEGER PRIMARY KEY UNIQUE,
                      email VARCHAR UNIQUE,
+                     name VARCHAR UNIQUE,
+                     is_admin BOOLEAN,
+                     activated BOOLEAN,
                      password VARCHAR)""", ())
         self.execute("""CREATE TABLE IF NOT EXISTS logs(
                      id INTEGER PRIMARY KEY UNIQUE,

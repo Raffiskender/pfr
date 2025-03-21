@@ -2,6 +2,7 @@ import streamlit as st
 import json
 
 from src.utils.navigation import Navigation
+from src.controllers.session_manager import SessionManager
 
 from src.utils import css_inject
 from src.views import home, goal, dataset, analysis, conclusion, options, login, logout, page_404, page_403
@@ -10,9 +11,15 @@ from src.router import get_route
 
 
 def load_session():
-    #Loading Cookies
-    with open('session.json') as json_file:
-        st.session_state.SESSION = json.load(json_file)
+    session = SessionManager()
+    token = session.get_cookie()
+    st.session_state.SESSION['email'] = ''
+    if token:
+        print(token)
+        st.session_state.SESSION['email'] = 'coucou'
+    #user_data = session.verify_token(token) if token else None
+    else:
+        print('pas de session en cours')
 
 def navigation():  
     route = get_route()
