@@ -2,54 +2,43 @@ import streamlit as st
 import datetime
 import jwt
 
+from dotenv import load_dotenv
+import os
+
 from streamlit_cookies_controller import CookieController
 
 class SessionManager:
     def __init__(self):
-        pass
-        #load_dotenv()
-        #self.secret_key = os.getenv("SECRET_KEY", "clé_par_defaut_pour_dev")
+        load_dotenv()
+        self.secret_key = os.getenv("SECRET_KEY")
 
     #Crée un token JWT valable 1 semaine
-    def create_token(self, username):
+    def create_token(self, user):
+        print(f"from session_manager : {user}")
         payload = {
-            "user": username.user,
-            "email": username.email,
-            "is_admin": username.is_admin,
-            "activated": username.activated,
+            "name": user[1],
+            "email": user[2],
+            "is_admin": user[3],
+            "activated": user[4],
             "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)
         }
-        self.set_cookie(payload)
         return jwt.encode(payload, self.secret_key, algorithm="HS256")
+
 
     def verify_token(self, token):
         """Vérifie et décode le token JWT"""
         try:
             return jwt.decode(token, self.secret_key, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
+            print('token expiré')
             return None  # Token expiré
         except jwt.InvalidTokenError:
+            print('token invalide')
             return None  # Token invalide
 
-    def set_cookie(self, token):
-        # Crée un cookie avec le token JWT
-        cookie_controller = CookieController()
-        cookie_name = "user_session"
-        cookie_controller.set(cookie_name, token)
-
-    def get_cookie(self):
-        cookie_controller = CookieController()
-        cookie_name = "user_session"
-        if cookie_controller.get(cookie_name):
-            print(f"Le cookie {cookie_name} existe avec la valeur : {cookie_controller.get(cookie_name)}")
-            return cookie_controller.get(cookie_name)
-        
-        else :
-            print(f"Le cookie {cookie_name} n'existe pas")
-            return False
-
-    def delete_cookie(self):
-        """Supprime le cookie (déconnexion)"""
-        st.query_params.update(auth="")
-        st.session_state.pop("set_cookie", None)
-
+    def is_user_connected(self):
+        cookies_ctrl = CookieController()
+        session_token = cookies_ctrl.get('user_session')
+        if session_token:
+            return session_token
+        return False

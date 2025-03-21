@@ -1,4 +1,5 @@
 import sqlite3
+import hashlib
 
 class Database :
     def __init__(self) -> None:
@@ -19,7 +20,7 @@ class Database :
                      email VARCHAR UNIQUE,
                      name VARCHAR UNIQUE,
                      is_admin BOOLEAN,
-                     activated BOOLEAN,
+                     is_activated BOOLEAN,
                      password VARCHAR)""", ())
         self.execute("""CREATE TABLE IF NOT EXISTS logs(
                      id INTEGER PRIMARY KEY UNIQUE,
@@ -27,16 +28,18 @@ class Database :
                      action VARCHAR,
                      value VARCHAR)""", ())
         try:
-            self.execute("INSERT INTO users (email,password) VALUES ('admin', 'admin')", ())
-        except:
+            self.execute("INSERT INTO users (email, password, name, is_admin, is_activated) VALUES (?, ?, ?, ?, ?)", ('admin', hashlib.sha256("Admin1234".encode(encoding="utf-32")).hexdigest(), "Admin", 0, 0))
+            print("Admin user Created")
+        except Exception as e:
             print("Admin already exists.")
+            print(e)
         self.commit()
 
 
-    # def drop(self):
-    #     self.execute("DROP TABLE ? ", ("users"))
-    #     self.execute("DROP TABLE ? ", ("logs"))
-    #     self.commit()
+    def drop(self):
+        self.execute("DROP TABLE users")
+        self.execute("DROP TABLE logs")
+        self.commit()
 
     def execute(self, query:str, values:tuple=()):
         return self.__db.cursor().execute(query, values)

@@ -1,7 +1,6 @@
 import streamlit as st
 from src.controllers.auth import auth
 from src.controllers.signup import signup
-from src.controllers.session_manager import SessionManager
 
 from src.router import redirect
 
@@ -21,11 +20,9 @@ def login():
     if not res:
         st.text("Wrong Account")
     else:
-        session = SessionManager()
-        token = session.create_token(st.session_state.email)
-        session.set_cookie(token)
-        st.rerun()
+        st.session_state.SESSION_LOGGED = res.logged
         redirect("home")
+
     
 def sign_up():
     res = signup(st.session_state.email, st.session_state.password)

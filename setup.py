@@ -6,7 +6,7 @@ import json
 with Database() as db:
     db.setup()
 
-s = Session("matis@datarockstars.ai", "matis")
+s = Session("raffi", "1234", "Raffi", 1, 1)
 s.signin()
 
 data = {      

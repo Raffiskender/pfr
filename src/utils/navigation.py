@@ -1,15 +1,16 @@
 import streamlit as st
 import base64
+
 from streamlit.components.v1 import html
 
 from PATHS import NAVBAR_PATHS, SETTINGS
-
 
 class Navigation():
     def __init__(self):
         pass
 
     def display_navbar(self):
+
         with open("src/assets/images/settings.png", "rb") as image_file:
             image_as_base64 = base64.b64encode(image_file.read())
         navbar_items = ''
@@ -18,32 +19,7 @@ class Navigation():
         nav_bar_items_burger = ''
         settings_items_burger = ''
 
-        if st.session_state.SESSION.get('email') != "":
-            for key, value in NAVBAR_PATHS.items():
-                #nav wide
-                navbar_items += (
-                    f'<a style="display: flex" target="_self" class="navitem" href="?page={value}">{key}</a>')
-                #nav burger
-                nav_bar_items_burger += (
-                    f'<li style="display: flex" class="nav__list_item"><a target="_self" class="nav__link" href="/?page={value}">{navbar_items}</a></li>')
-
-            for key, value in SETTINGS.items():
-                if (key == "CONNEXION"):
-                    #nav wide
-                    settings_items += (
-                        f'<a style="display: none" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
-                    #nav_burger
-                    settings_items_burger += (
-                        f'<a style="display: none" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
-                else:
-                    #nav_wide
-                    settings_items += (
-                        f'<a style="display: flex" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
-                    #nav burger
-                    settings_items_burger += (
-                        f'<a style="display: flex" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
-
-        else:
+        if "SESSION_LOGGED" not in st.session_state or not st.session_state.SESSION_LOGGED :
             for key, value in NAVBAR_PATHS.items():
                 if (key != "ACCUEIL"):
                     #nav wide
@@ -75,6 +51,31 @@ class Navigation():
                     #nav burger
                     settings_items_burger += (
                         f'<a style="display: flex" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
+        else:
+            for key, value in NAVBAR_PATHS.items():
+                #nav wide
+                navbar_items += (
+                    f'<a style="display: flex" target="_self" class="navitem" href="?page={value}">{key}</a>')
+                #nav burger
+                nav_bar_items_burger += (
+                    f'<li style="display: flex" class="nav__list_item"><a target="_self" class="nav__link" href="/?page={value}">{navbar_items}</a></li>')
+
+            for key, value in SETTINGS.items():
+                if (key == "CONNEXION"):
+                    #nav wide
+                    settings_items += (
+                        f'<a style="display: none" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
+                    #nav_burger
+                    settings_items_burger += (
+                        f'<a style="display: none" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
+                else:
+                    #nav_wide
+                    settings_items += (
+                        f'<a style="display: flex" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
+                    #nav burger
+                    settings_items_burger += (
+                        f'<a style="display: flex" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
+
 
         navigation = rf'''
         <div>
