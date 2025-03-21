@@ -13,6 +13,7 @@ from src.router import get_route
 def load_session():
     session = SessionManager()
     token = session.get_cookie()
+    st.session_state.SESSION = {}
     st.session_state.SESSION['email'] = ''
     if token:
         print(token)
