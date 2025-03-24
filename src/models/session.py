@@ -21,7 +21,7 @@ class Session:
             res = db.execute("SELECT uid FROM users WHERE password=? AND email=?", (self.hash(), self.email))
             return res.fetchone()[0]
 
-    def fetch_user(self) -> bool:
+    def fetch_user(self) -> str:
         with Database() as db:
             res = db.execute("SELECT uid, name, email, is_admin, is_activated FROM users WHERE password=? AND email=?", (self.hash(), self.email))
             return res.fetchone()
@@ -52,4 +52,5 @@ class Session:
         cookies_ctrl = CookieController()
         session_mng = SessionManager()
         cookies_ctrl.set('user_session', session_mng.create_token(res))
-        
+    
+    

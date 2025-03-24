@@ -22,6 +22,7 @@ class Database :
                      is_admin BOOLEAN,
                      is_activated BOOLEAN,
                      password VARCHAR)""", ())
+        
         self.execute("""CREATE TABLE IF NOT EXISTS logs(
                      id INTEGER PRIMARY KEY UNIQUE,
                      uid INTERGER,
@@ -37,9 +38,12 @@ class Database :
 
 
     def drop(self):
-        self.execute("DROP TABLE users")
-        self.execute("DROP TABLE logs")
-        self.commit()
+        self.execute("DROP TABLE patient")
+        self.execute("DROP TABLE health")
+        self.execute("DROP TABLE life_style")
+        # self.commit()
+        # self.execute("DROP TABLE users")
+        # self.execute("DROP TABLE logs")
 
     def execute(self, query:str, values:tuple=()):
         return self.__db.cursor().execute(query, values)
