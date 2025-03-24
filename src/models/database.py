@@ -41,9 +41,9 @@ class Database :
         self.execute("DROP TABLE patient")
         self.execute("DROP TABLE health")
         self.execute("DROP TABLE life_style")
-        # self.commit()
-        # self.execute("DROP TABLE users")
-        # self.execute("DROP TABLE logs")
+        self.execute("DROP TABLE users")
+        self.execute("DROP TABLE logs")
+        self.commit()
 
     def execute(self, query:str, values:tuple=()):
         return self.__db.cursor().execute(query, values)
