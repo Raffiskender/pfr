@@ -4,7 +4,7 @@ from src.utils.navigation import Navigation
 from src.controllers.session_manager import SessionManager
 from streamlit_cookies_controller import CookieController
 from src.utils import css_inject
-from src.views import home, goal, dataset, analysis, conclusion, options, login, logout, page_404, page_403
+from src.views import home, goal, dataset, analysis, conclusion, options, login, logout, page_404, page_403, admin
 from src.router import get_route
 
 
@@ -13,10 +13,12 @@ def load_session():
     session = SessionManager()
     cookies_ctrl = CookieController()
     token = cookies_ctrl.get('user_session')
-    if token and session.verify_token(token):
-        st.session_state.SESSION_LOGGED = True
+    verification = token and session.verify_token(token)
+    
+    if verification:
+        return (1, verification['is_admin'])
     else:
-        st.session_state.SESSION_LOGGED = False
+        return False
 
 def navigation():  
     route = get_route()
@@ -56,16 +58,25 @@ def navigation():
                 logout.load_view()
             else:
                 page_403.load_view()
+        case "logout":
+            if st.session_state.SESSION_LOGGED & st.session_state.IS_ADMIN:
+                admin.load_view()
+            else:
+                page_403.load_view()
         case _:
             page_404.load_view()
 
 
 st.set_page_config(layout="centered", page_title='Anxiety attack')
 css_inject.inject_custom_css()
+try:
+    st.session_state.SESSION_LOGGED = False
+    data = load_session()
+    if data:
+        st.session_state.SESSION_LOGGED = data[0]
+        st.session_state.IS_ADMIN = data[1]
 
-load_session()
-
-nav = Navigation()
-nav.display_navbar()
-
-navigation()
+finally:
+    nav = Navigation()
+    nav.display_navbar()
+    navigation()

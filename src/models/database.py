@@ -46,3 +46,5 @@ class Database :
 
     def commit(self):
         return self.__db.commit()
+
+    

@@ -1,5 +1,6 @@
 import streamlit as st
-from src.router import redirect
+
+
 def load_view():
 
     st.title("Les crises d'anxiété")

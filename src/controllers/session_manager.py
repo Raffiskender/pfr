@@ -1,7 +1,7 @@
-import streamlit as st
+import hashlib
 import datetime
 import jwt
-
+from src.models.database import Database
 from dotenv import load_dotenv
 import os
 
@@ -14,12 +14,11 @@ class SessionManager:
 
     #Crée un token JWT valable 1 semaine
     def create_token(self, user):
-        print(f"from session_manager : {user}")
         payload = {
             "name": user[1],
             "email": user[2],
             "is_admin": user[3],
-            "activated": user[4],
+            "is_activated": user[4],
             "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)
         }
         return jwt.encode(payload, self.secret_key, algorithm="HS256")
@@ -42,3 +41,8 @@ class SessionManager:
         if session_token:
             return session_token
         return False
+
+    def check_user_password(self, email, password):
+        with Database() as db :
+            res = db.execute("SELECT uid, name, email, is_admin, is_activated FROM users WHERE password=? AND email=?", (hashlib.sha256(password.encode(encoding="utf-32")).hexdigest(), email))
+            print(res)
