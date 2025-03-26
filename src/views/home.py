@@ -27,7 +27,7 @@ def load_view():
 
     """, unsafe_allow_html=True)
 
-    df = pd.read_csv('./data/clean_data.csv')
+    df = pd.read_csv('./src/assets/data/clean_data.csv')
     with st.expander("Afficher les premières lignes"):
         st.dataframe(df.head(5))
 

@@ -5,8 +5,8 @@ import base64
 def load_view():
     st.title('Aquisition, préparation et présentation des données')
 
-    df = pd.read_csv('./data/anxiety_attack_dataset.csv')
-    df_clean = pd.read_csv('./data/clean_data.csv')
+    df = pd.read_csv('./src/assets/data/anxiety_attack_dataset.csv')
+    df_clean = pd.read_csv('./src/assets/data/clean_data.csv')
     
     st.markdown(
         """
@@ -20,9 +20,35 @@ def load_view():
         """
         ## Préparation
         
-        Ci-dessous les données nettoyées. Notez qu'elles étaient propres à l'origine.J'ai juste ajouté quelques get_dummies pour faciliter l'exploiattion des données.
-        J'ai également renommé quelques colonnes pour qu'elles soient plus consises.
+        Les données nettoyées. Notez qu'elles étaient propres à l'origine.J'ai juste ajouté quelques get_dummies pour faciliter l'exploitation des données. J'ai également renommé quelques colonnes pour que leur nom soit plus consis.
     """)
+
+    with st.expander('ex. de nettoyage de code'):
+        st.code(
+        '''
+        new_col_names = {
+            'Age'                               : 'age',
+            'Gender'                            : 'gender',
+            'Occupation'                        : 'occupation',
+            'Sleep Hours'                       : 'sleep_hours',
+            'Physical Activity (hrs/week)'      : 'physical_activity',
+            'Caffeine Intake (mg/day)'          : 'caffeine_intake',
+            (...)
+        }
+
+        # Get_dummies
+        df = df.rename(columns=new_col_names)
+        df = pd.get_dummies(df, columns=['gender'])
+
+        # Transformation des colonnes yes/no en booléens
+        yes_no_to_bool = {'Yes': True, 'No': False}
+        df['smoking'] = df['smoking'].map(yes_no_to_bool)
+        df['family_history'] = df['family_history'].map(yes_no_to_bool)
+        df['medication'] = df['medication'].map(yes_no_to_bool)
+        df['dizziness'] = df['dizziness'].map(yes_no_to_bool)
+        df['recent_life_event'] = df['recent_life_event'].map(yes_no_to_bool)
+        ''')
+
     with st.expander("Afficher les données nettoyées"):
         st.dataframe(df_clean)
 
@@ -35,13 +61,16 @@ def load_view():
         ## Insertion en base de donnée
 
         Les données présentée ci-dessus ont été triés par catégories et insérées dans une base de donnée dont le diagramme et les diverses relations sont exposées sur le schémas ci-dessous.
+
         <img class="db_diagram_img" src="data:image/png;base64, {image_as_base64.decode("utf-8")}" alt="Diagramme de la base de données"/>
         
-        exemple d'insertion du css vers la base de donnée :
+        Puis les tables ont été créées, et les lignes insérées.
+        E
+        exemple du code d'insertion du csv vers la base de donnée :
     """, unsafe_allow_html=True)
 
     st.code('''
-        # Création de la table patients - code SQL:
+        # Création de la table patients - requète SQL seule :
         CREATE TABLE IF NOT EXISTS patient(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             age INTEGER,
@@ -50,7 +79,7 @@ def load_view():
             gender_is_other INTEGER)
 
         # Lecture du CSV
-        df = pd.read_csv("./data/clean_data.csv")
+        df = pd.read_csv("./src/assets/data/clean_data.csv")
 
         # Insertion des données dans la table
         # L'objet database est le modèle de l'application. Je me sers ici de sa fonction
@@ -66,11 +95,11 @@ def load_view():
     ''')
     st.markdown(
         """
-        Ce code a été mis dans un fichier d\'extension .py. Il doit être executé manuellement (`python3 data_to_db.py`).
+        Ce code a été mis dans un fichier d\'extension .py qui doit être executé manuellement (`python3 data_to_db.py`).
 
         ## Description des données
 
-        Les données présentent les données de 12000 sur des patients ayant eu une crise d'anxiété. Les colonnes sont les suivantes:
+        Les données présentent les données de 12000 patients ayant eu une crise d'anxiété. Les colonnes sont les suivantes:
         - Age
         - Sexe
         - Métier
@@ -90,5 +119,5 @@ def load_view():
         - Événement de vie récent
         - Qualité de l’alimentation
         - Gravité de la crise
-                    
+        
     """)
