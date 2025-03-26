@@ -7,4 +7,4 @@ seaborn
 streamlit
 dotenv
 jwt
-streamlit-cookies-manager
+streamlit_cookies_controller

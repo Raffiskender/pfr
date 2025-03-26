@@ -67,8 +67,9 @@ def navigation():
             page_404.load_view()
 
 
-st.set_page_config(layout="centered", page_title='Anxiety attack')
+st.set_page_config(layout="wide", page_title='Anxiety attack')
 css_inject.inject_custom_css()
+
 try:
     st.session_state.SESSION_LOGGED = False
     data = load_session()

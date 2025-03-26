@@ -1,5 +1,20 @@
 .stAppHeader{
-    display: none;
+    display: None;
+    /* 3 lines above to comment in production*/
+    /* display: block;
+    position:fixed;
+    top: 55px;
+    background-color: #333; */
+}
+.stMainBlockContainer{
+    width:75vw;
+    max-width: 1000px;
+    min-width: 300px;
+    margin-inline: auto;
+    margin-top: -50px;
+}
+h1{
+    text-align: center;
 }
 
 .navbar_wide{
