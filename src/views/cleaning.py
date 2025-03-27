@@ -61,22 +61,22 @@ def load_view():
     with st.expander("Afficher les données nettoyées"):
         st.dataframe(df_clean)
 
-    with open("src/assets/images/db_diagram.png", "rb") as image_file:
-            image_as_base64 = base64.b64encode(image_file.read())
-
     st.markdown(
-        f"""
+    """
         
-        ## Insertion en base de donnée
+    ## Insertion en base de donnée
 
-        Les données présentée ci-dessus ont été triés par catégories et insérées dans une base de donnée dont le diagramme et les diverses relations sont exposées sur le schémas ci-dessous.
+    Les données présentée ci-dessus ont été triés par catégories et insérées dans une base de donnée dont le diagramme et les diverses relations sont exposées sur le schémas ci-dessous.
+    """)
 
-        <img class="db_diagram_img" src="data:image/png;base64, {image_as_base64.decode("utf-8")}" alt="Diagramme de la base de données"/>
+    st.image("src/assets/images/db_diagram.png", caption = "diagramme de la base de données")
         
+    st.markdown(
+    """
         Puis les tables ont été créées, et les lignes insérées.
         E
         exemple du code d'insertion du csv vers la base de donnée :
-    """, unsafe_allow_html=True)
+    """)
 
     st.code('''
         # Création de la table patients - requète SQL seule :
