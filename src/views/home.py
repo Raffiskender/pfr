@@ -34,9 +34,6 @@ def load_view():
 
     st.markdown(
     f"""
-    ## Objectifs
-    Faire une EDA sur le jeu de données pour en extraire des informations pertinentes.
-
     ## Visuels de répartitions
     
     Ci-dessous une analyse rapide de la répartition des données. Une analyse plus approfondie sur <a class="link" href="/?page=eda" target="_self">cette page</a>
