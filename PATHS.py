@@ -1,13 +1,13 @@
 NAVBAR_PATHS = {
-    'ACCUEIL':'home',
-    'OBJECTIF DU PROJET': 'goal',
-    'JEU DE DONNEES': 'dataset',
-    'ANALYSE': 'analysis',
-    'CONCLUSION': 'conclusion',
+    'accueil'      : 'home',
+    'traitement'   : 'cleaning',
+    'analyse'      : 'eda',
+    'visualisation': 'viz',
+    'conclusion'   : 'conclusion',
 }
 
 SETTINGS = {
-    'OPTIONS':'options',
-    'CONNEXION':'login',
-    'DECONNEXION':'logout'
+    'options'    : 'options',
+    'connexion'  : 'login',
+    'deconnexion': 'logout'
 }

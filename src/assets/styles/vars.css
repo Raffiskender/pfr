@@ -1,0 +1,12 @@
+:root {
+    --font-bg : #555;
+    --font-color: #2c3e50;
+    --header-color : hsl(34, 100%, 50%);
+    --subheader-color : hsl(34 100% 65%);
+    --subsubheader-color:  hsl(34 100% 75%);
+    --link-color :  hsl(34, 100%, 80%);
+    --link-focus-color :  hsl(0, 0%, 100%);
+    --header-bg-color: #34495e;
+    --footer-bg-color: #16a085;
+
+}

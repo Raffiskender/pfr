@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import base64
+import nbformat
+from nbconvert import PythonExporter
 
 def load_view():
     st.title('Aquisition, préparation et présentation des données')
@@ -9,18 +11,25 @@ def load_view():
     df_clean = pd.read_csv('./src/assets/data/clean_data.csv')
     
     st.markdown(
-        """
-        ## Données sur les crises d'anxiété"
-        Ci-dessous les données brutes chargées depuis un dataset Kaggle.
+    """
+    ## Données sur les crises d'anxiété"
+    Ci-dessous les données brutes chargées depuis un dataset Kaggle.
     """)
     with st.expander("Afficher les données brutes"):
         st.dataframe(df)
     
+    st.subheader("Présentation des données")
+    
+    # Charger un notebook
+    with open("./src/assets/html_views/notebook.html", "r", encoding="utf-8") as f:
+        html_code = f.read()
+    st.components.v1.html(html_code, height=600, scrolling=True)
+
     st.markdown(
         """
         ## Préparation
         
-        Les données nettoyées. Notez qu'elles étaient propres à l'origine.J'ai juste ajouté quelques get_dummies pour faciliter l'exploitation des données. J'ai également renommé quelques colonnes pour que leur nom soit plus consis.
+        Les données nettoyées. Notez qu'elles étaient propres à l'origine.J'ai juste ajouté quelques get_dummies pour en faciliter l'exploitation. J'ai également renommé quelques colonnes pour que leur nom soit plus consis.
     """)
 
     with st.expander('ex. de nettoyage de code'):
@@ -96,28 +105,28 @@ def load_view():
     st.markdown(
         """
         Ce code a été mis dans un fichier d\'extension .py qui doit être executé manuellement (`python3 data_to_db.py`).
-
-        ## Description des données
-
-        Les données présentent les données de 12000 patients ayant eu une crise d'anxiété. Les colonnes sont les suivantes:
-        - Age
-        - Sexe
-        - Métier
-        - Heures de sommeil
-        - Activité physique
-        - Consommation de caféine
-        - Consommation d'alcool
-        - Tabagisme
-        - Antécédents familiaux
-        - Niveau de stress
-        - Fréquence cardiaque pendant une crise
-        - Fréquence respiratoire
-        - Niveau de transpiration
-        - Étourdissements
-        - Médication
-        - Séance de thérapie
-        - Événement de vie récent
-        - Qualité de l’alimentation
-        - Gravité de la crise
-        
     """)
+        
+        # DEPRECATED
+        #  ## Description des données
+
+        # Les données présentent les données de 12000 patients ayant eu une crise d'anxiété. Les colonnes sont les suivantes:
+        # - Age
+        # - Sexe
+        # - Métier
+        # - Heures de sommeil
+        # - Activité physique
+        # - Consommation de caféine
+        # - Consommation d'alcool
+        # - Tabagisme
+        # - Antécédents familiaux
+        # - Niveau de stress
+        # - Fréquence cardiaque pendant une crise
+        # - Fréquence respiratoire
+        # - Niveau de transpiration
+        # - Étourdissements
+        # - Médication
+        # - Séance de thérapie
+        # - Événement de vie récent
+        # - Qualité de l’alimentation
+        # - Gravité de la crise

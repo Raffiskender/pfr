@@ -21,7 +21,7 @@ class Navigation():
 
         if "SESSION_LOGGED" not in st.session_state or not st.session_state.SESSION_LOGGED :
             for key, value in NAVBAR_PATHS.items():
-                if (key != "ACCUEIL"):
+                if (key != "accueil"):
                     #nav wide
                     navbar_items += (
                         f'<a style="display: none" target="_self" href="/?page={value}" class="navitem">{key}</a>')
@@ -37,7 +37,7 @@ class Navigation():
                         f'<li style="display: flex" class="nav__list_item"><a target="_self" class="navitem" href="/?page={value}">{navbar_items}</a></li>')
 
             for key, value in SETTINGS.items():
-                if (key != "CONNEXION"):
+                if (key != "connexion"):
                     #nav wide
                     settings_items += (
                         f'<a style="display: none" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
@@ -61,7 +61,7 @@ class Navigation():
                     f'<li style="display: flex" class="nav__list_item"><a target="_self" class="nav__link" href="/?page={value}">{navbar_items}</a></li>')
 
             for key, value in SETTINGS.items():
-                if (key == "CONNEXION"):
+                if (key == "connexion"):
                     #nav wide
                     settings_items += (
                         f'<a style="display: none" target="_self" href="/?page={value}" class="settingsNav">{key}</a>')
@@ -139,4 +139,5 @@ class Navigation():
             }
         </script>
         '''
+        
         html(js)

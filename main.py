@@ -1,24 +1,32 @@
 import streamlit as st
+from streamlit.components.v1 import html
 
 from src.utils.navigation import Navigation
 from src.controllers.session_manager import SessionManager
 from streamlit_cookies_controller import CookieController
 from src.utils import css_inject
-from src.views import home, goal, dataset, analysis, conclusion, options, login, logout, page_404, page_403, admin
+from src.views import home, viz, cleaning, eda, conclusion, options, login, logout, page_404, page_403, admin
 from src.router import get_route
 
-
-
 def load_session():
-    session = SessionManager()
-    cookies_ctrl = CookieController()
-    token = cookies_ctrl.get('user_session')
-    verification = token and session.verify_token(token)
-    
-    if verification:
-        return (1, verification['is_admin'])
-    else:
-        return False
+    # cookies_ctrl = CookieController()
+    # session = SessionManager()
+    # token = cookies_ctrl.get('user_session')
+    # verification = session.verify_token(token)
+
+    # if token and verification:
+    #     st.session_state.SESSION_LOGGED = True
+    #     st.session_state.IS_ADMIN = verification['is_admin']
+    # else:
+    #     st.session_state.SESSION_LOGGED = False
+
+    # load_page()
+    # st.session_state.SESSION_LOADING = False
+    st.session_state.SESSION_LOGGED = True
+def load_page():
+    nav = Navigation()
+    nav.display_navbar()
+    navigation()
 
 def navigation():  
     route = get_route()
@@ -28,19 +36,19 @@ def navigation():
             home.load_view()
         case "login":
             login.load_view()
-        case "goal":
+        case "cleaning":
             if st.session_state.SESSION_LOGGED:
-                goal.load_view()
+                cleaning.load_view()
             else:
                 page_403.load_view()
-        case "dataset":
+        case "eda":
             if st.session_state.SESSION_LOGGED:
-                dataset.load_view()
+                eda.load_view()
             else:
                 page_403.load_view()
-        case "analysis":
+        case "viz":
             if st.session_state.SESSION_LOGGED:
-                analysis.load_view()
+                viz.load_view()
             else:
                 page_403.load_view()
         case "conclusion":
@@ -58,11 +66,6 @@ def navigation():
                 logout.load_view()
             else:
                 page_403.load_view()
-        case "logout":
-            if st.session_state.SESSION_LOGGED & st.session_state.IS_ADMIN:
-                admin.load_view()
-            else:
-                page_403.load_view()
         case _:
             page_404.load_view()
 
@@ -70,14 +73,19 @@ def navigation():
 st.set_page_config(layout="wide", page_title='Anxiety attack')
 css_inject.inject_custom_css()
 
-try:
-    st.session_state.SESSION_LOGGED = False
-    data = load_session()
-    if data:
-        st.session_state.SESSION_LOGGED = data[0]
-        st.session_state.IS_ADMIN = data[1]
+# if 'SESSION_LOGGED' not in st.session_state:
+#     st.session_state.SESSION_LOGGED = False
+#     load_session()
+#     load_page()
+    
+# else:
+load_session()
+load_page()
 
-finally:
-    nav = Navigation()
-    nav.display_navbar()
-    navigation()
+html(
+'''
+<script>
+console.log('hop')
+    window.parent.document.querySelector('.stIFrame').remove();
+</script>
+''')
