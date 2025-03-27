@@ -8,3 +8,4 @@ streamlit
 dotenv
 jwt
 streamlit_cookies_controller
+nbformat
