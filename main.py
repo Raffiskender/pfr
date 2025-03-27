@@ -23,6 +23,7 @@ def load_session():
     # load_page()
     # st.session_state.SESSION_LOADING = False
     st.session_state.SESSION_LOGGED = True
+
 def load_page():
     nav = Navigation()
     nav.display_navbar()
@@ -85,7 +86,33 @@ load_page()
 html(
 '''
 <script>
-console.log('hop')
+    // Suppression du iframe d'en haut
     window.parent.document.querySelector('.stIFrame').remove();
+
+    // Dropdown hide / show
+
+    var dropdown = window.parent.document.querySelector("img.dropbtn");
+    var dropWindow = window.parent.document.getElementById("myDropdown")
+    dropdown.onclick = () => {
+        if (dropWindow.style.visibility == "hidden"){
+            dropWindow.style.visibility = "visible";
+            window.parent.document.addEventListener('click', (event) => {
+                if (event.target != dropdown ){
+                    dropWindow.style.visibility = "hidden";
+                    }
+            }, once=true);
+        }else{
+            dropWindow.style.visibility = "hidden";
+        }
+    };
+
+    // Burger menu hide / show
+    var burger_btn = window.parent.document.querySelector(".nav_burger_btn");
+    var burger_nav = window.parent.document.querySelector(".navbar_burger");
+
+    burger_btn.onclick = () => {
+        burger_btn.classList.toggle("active");
+        burger_nav.classList.toggle("active");
+    }
 </script>
 ''')

@@ -110,33 +110,8 @@ class Navigation():
 
         js = '''
         <script>
-            // Dropdown hide / show
-
-            var dropdown = window.parent.document.querySelector("img.dropbtn");
-            var dropWindow = window.parent.document.getElementById("myDropdown")
-            dropdown.onclick = () => {
-                if (dropWindow.style.visibility == "hidden"){
-                    dropWindow.style.visibility = "visible";
-                    window.parent.document.addEventListener('click', (event) => {
-                        console.log(event.target)
-                        if (event.target != dropdown ){
-                            console.log('Perte de focus sur dropdown');
-                            dropWindow.style.visibility = "hidden";
-                            }
-                    }, once=true);
-                }else{
-                    dropWindow.style.visibility = "hidden";
-                }
-            };
-
-            // Burger menu hide / show
-            var burger_btn = window.parent.document.querySelector(".nav_burger_btn");
-            var burger_nav = window.parent.document.querySelector(".navbar_burger");
-
-            burger_btn.onclick = () => {
-                burger_btn.classList.toggle("active");
-                burger_nav.classList.toggle("active");
-            }
+            console.log('coucou !')
+            
         </script>
         '''
         

@@ -17,11 +17,8 @@ div:empty {
     max-width: 1000px;
     min-width: 300px;
     margin-inline: auto;
-    margin-top: -50px;
+    /*margin-top: -50px;*/
 }
-
-
-
 
 .version-span{
     color: white;
