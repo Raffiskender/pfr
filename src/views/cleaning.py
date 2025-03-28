@@ -35,6 +35,7 @@ def load_view():
     with st.expander('ex. de nettoyage de code'):
         st.code(
         '''
+        # Renommage des colonnes
         new_col_names = {
             'Age'                               : 'age',
             'Gender'                            : 'gender',
@@ -44,9 +45,9 @@ def load_view():
             'Caffeine Intake (mg/day)'          : 'caffeine_intake',
             (...)
         }
-
-        # Get_dummies
         df = df.rename(columns=new_col_names)
+        
+        # Get_dummies
         df = pd.get_dummies(df, columns=['gender'])
 
         # Transformation des colonnes yes/no en booléens
@@ -69,13 +70,13 @@ def load_view():
     Les données présentée ci-dessus ont été triés par catégories et insérées dans une base de donnée dont le diagramme et les diverses relations sont exposées sur le schémas ci-dessous.
     """)
 
-    st.image("src/assets/images/db_diagram.png", caption = "diagramme de la base de données")
+    st.image("src/assets/images/db_diagram.png", caption="diagramme de la base de données")
         
     st.markdown(
     """
         Puis les tables ont été créées, et les lignes insérées.
-        E
-        exemple du code d'insertion du csv vers la base de donnée :
+
+        Exemple du code d'insertion du csv vers la base de donnée :
     """)
 
     st.code('''
@@ -107,26 +108,3 @@ def load_view():
         Ce code a été mis dans un fichier d\'extension .py qui doit être executé manuellement (`python3 data_to_db.py`).
     """)
         
-        # DEPRECATED
-        #  ## Description des données
-
-        # Les données présentent les données de 12000 patients ayant eu une crise d'anxiété. Les colonnes sont les suivantes:
-        # - Age
-        # - Sexe
-        # - Métier
-        # - Heures de sommeil
-        # - Activité physique
-        # - Consommation de caféine
-        # - Consommation d'alcool
-        # - Tabagisme
-        # - Antécédents familiaux
-        # - Niveau de stress
-        # - Fréquence cardiaque pendant une crise
-        # - Fréquence respiratoire
-        # - Niveau de transpiration
-        # - Étourdissements
-        # - Médication
-        # - Séance de thérapie
-        # - Événement de vie récent
-        # - Qualité de l’alimentation
-        # - Gravité de la crise
