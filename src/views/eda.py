@@ -32,106 +32,131 @@ def load_box_plots(df):
     with st.expander('Voir la répartition'):
         st.pyplot(fig)
 
-def load_pie_plots(df):
+def load_hist_plots(df):
 
     # Les genres
     df_gender = df[['gender_is_female', 'gender_is_male', 'gender_is_other']].sum()
+    labels = ['Femmes', 'Hommes', 'Autres']
+    df_gender.index = labels
+    
     # Le travail
     df_job = df[['job_is_doctor', 'job_is_engineer', 'job_is_other', 'job_is_student', 'job_is_teacher', 'job_is_unemployed']].sum()
+    labels = ['Doctors', 'Engineers', 'Others', 'Students', 'Teachers', 'Unemployed']
+    df_job.index = labels
 
     # Les fumeurs
     df_smokers = pd.DataFrame(
         {'count':[
-            df[['is_smoker']].sum(),
-            df.shape[0] - df[['is_smoker']].sum()
+            df[['is_smoker']].sum().item(),
+            df.shape[0] - df[['is_smoker']].sum().item()
         ]},
-        index=['Yes', 'No'])
+        index=['Oui', 'Non'])
+    st.dataframe(df_smokers)
     
     # Medication
     df_medication = pd.DataFrame(
         {'count':[
-            df[['medication']].sum(),
-            df.shape[0] - df[['medication']].sum()
+            df[['medication']].sum().item(),
+            df.shape[0] - df[['medication']].sum().item()
         ]},
-        index=['Yes', 'No'])
+        index=['Oui', 'Non'])
     
     # family history
     df_family_history = pd.DataFrame(
         {'count':[
-            df[['family_history']].sum(),
-            df.shape[0] - df[['family_history']].sum()
+            df[['family_history']].sum().item(),
+            df.shape[0] - df[['family_history']].sum().item()
         ]},
-        index=['Yes', 'No'])
-    
+        index=['Oui', 'Non'])
+
     # recently_chocked
     df_recently_chocked = pd.DataFrame(
         {'count':[
-            df[['recently_chocked']].sum(),
-            df.shape[0] - df[['recently_chocked']].sum()
+            df[['recently_chocked']].sum().item(),
+            df.shape[0] - df[['recently_chocked']].sum().item()
         ]},
-        index=['Yes', 'No'])
+        index=['Oui', 'Non'])
     
     # dizziness
     df_dizziness = pd.DataFrame(
         {'count':[
-            df[['dizziness']].sum(),
-            df.shape[0] - df[['dizziness']].sum()
+            df[['dizziness']].sum().item(),
+            df.shape[0] - df[['dizziness']].sum().item()
         ]},
-        index=['Yes', 'No'])
+        index=['Oui', 'Non'])
 
 
-    fig, axes = plt.subplots(4, 2, figsize=(10, 15))
+   # Création de la figure avec un Gridspec
+    fig = plt.figure(layout=None, figsize=(10, 15))
+    # # Création de la grille pour la première ligne avec un ratio 1:2
+    gs = fig.add_gridspec(nrows=4, ncols=6, left=0.1, right=0.9, hspace=0.3, wspace=0.7)
 
-    plt.rcParams.update({'font.size':   11,    # Taille des titres des axes
-                     'axes.labelsize':  11,          # Taille des labels des axes
-                     'xtick.labelsize': 11,         # Taille des labels des ticks X
-                     'ytick.labelsize': 11,         # Taille des labels des ticks Y
-                     'legend.fontsize': 11})        # Taille de la légende
+    # Première ligne avec ratio de colonnes 1:2
+    ax0 = fig.add_subplot(gs[0, 0:2])
+    ax1 = fig.add_subplot(gs[0, 2:6])
+    ax2 = fig.add_subplot(gs[1, 0:3])
+    ax3 = fig.add_subplot(gs[1, 3:6])
+    ax4 = fig.add_subplot(gs[2, 0:3])
+    ax5 = fig.add_subplot(gs[2, 3:6])
+    ax6 = fig.add_subplot(gs[3, 0:3])
+    ax7 = fig.add_subplot(gs[3, 3:6])
 
+    # Mise à jour des paramètres globaux de la police pour la cohérence
+    plt.rcParams.update({'font.size': 11,  # Taille des titres des axes
+                        'axes.labelsize': 11,  # Taille des labels des axes
+                        'xtick.labelsize': 11,  # Taille des labels des ticks X
+                        'ytick.labelsize': 11,  # Taille des labels des ticks Y
+                        'legend.fontsize': 11})  # Taille de la légende
+
+    # Ajustement des espacements
     plt.subplots_adjust(hspace=1, wspace=0.5)
 
-    colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6']
-    
     # Répartition des genres
-    axes[0, 0].set_title("Genres")
-    labels = ['Female', 'Male', 'Other']
-    axes[0, 0].pie(df_gender, labels=labels, colors=colors, autopct='%1.1f%%')
+    ax0.set_title("Genres")
+    sns.barplot(x=df_gender.index, y=df_gender, palette="pastel", ax=ax0)
+    ax0.set_xlabel('')
+    ax0.set_ylabel('')
 
     # Répartition du travail
-    axes[0, 1].set_title("Travail")
-    labels = ['Doctors', 'Engineers', 'Others', 'Students', 'Teachers', 'Unemployed']
-    axes[0, 1].pie(df_job, labels=labels, colors=colors, autopct='%1.1f%%')
-   
+    ax1.set_title("Travail")
+    sns.barplot(x=df_job.index, y=df_job, palette="pastel", ax=ax1)
+    ax1.set_xlabel('')
+    ax1.set_ylabel('')
+
     # Répartition des fumeurs
-    axes[1, 0].set_title("Fumeurs")
-    labels = ['Oui', 'Non']
-    axes[1, 0].pie(df_smokers['count'], labels=labels, colors=colors, autopct='%1.1f%%')
+    ax2.set_title("Fumeurs")
+    sns.barplot(x=df_smokers.index, y=df_smokers['count'], palette="pastel", ax=ax2)
+    ax2.set_xlabel('')
+    ax2.set_ylabel('')
 
-    # Medication
-    axes[1, 1].set_title("Personnes sous traitement")
-    labels = ['Oui', 'Non']
-    axes[1, 1].pie(df_medication['count'], labels=labels, colors=colors, autopct='%1.1f%%')
+    # Médication
+    ax3.set_title("Personnes sous traitement")
+    sns.barplot(x=df_medication.index, y=df_medication['count'], palette="pastel", ax=ax3)
+    ax3.set_xlabel('')
+    ax3.set_ylabel('')
 
-    # family history
-    axes[2, 0].set_title("Historique familial")
-    labels = ['Oui', 'Non']
-    axes[2, 0].pie(df_family_history['count'], labels=labels, colors=colors, autopct='%1.1f%%')
-   
-    # recently chocked
-    axes[2, 1].set_title("Choc récent")
-    labels = ['Oui', 'Non']
-    axes[2, 1].pie(df_recently_chocked['count'], labels=labels, colors=colors, autopct='%1.1f%%')
+    # Historique familial
+    ax4.set_title("Historique familial")
+    sns.barplot(x=df_family_history.index, y=df_family_history['count'], palette="pastel", ax=ax4)
+    ax4.set_xlabel('')
+    ax4.set_ylabel('')
 
-    # dizziness
-    axes[3, 0].set_title("Vertiges en crise")
-    labels = ['Oui', 'Non']
-    axes[3, 0].pie(df_dizziness['count'], labels=labels, colors=colors, autopct='%1.1f%%')
+    # Choc récent
+    ax5.set_title("Choc récent")
+    sns.barplot(x=df_recently_chocked.index, y=df_recently_chocked['count'], palette="pastel", ax=ax5)
+    ax5.set_xlabel('')
+    ax5.set_ylabel('')
 
-    plt.tight_layout()
+    # Vertiges en crise
+    ax6.set_title("Vertiges en crise")
+    sns.barplot(x=df_dizziness.index, y=df_dizziness['count'], palette="pastel", ax=ax6)
+    ax6.set_xlabel('')
+    ax6.set_ylabel('')
 
+
+    # Affichage dans Streamlit avec un panneau d'extension
     with st.expander('Voir la répartition'):
         st.pyplot(fig)
-
 
 
 def load_view():
@@ -185,4 +210,4 @@ def load_view():
     st.header('Répartitions')
     st.write('Nous avons pu voir la répartition via les box-plots sur les colonnes à chiffres. Voyons à présent celle sur les colonnes binaires')
 
-    load_pie_plots(df)
+    load_hist_plots(df)

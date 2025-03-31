@@ -11,6 +11,7 @@ from src.router import get_route
 def load_session():
     # cookies_ctrl = CookieController()
     # session = SessionManager()
+    
     # token = cookies_ctrl.get('user_session')
     # verification = session.verify_token(token)
 
