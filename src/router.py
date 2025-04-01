@@ -12,7 +12,3 @@ def redirect(new_route, reload=False):
     if new_route[0] != "/":
         new_route = new_route
     st.query_params.update(page=new_route)
-
-    time.sleep(0.1) 
-    if reload:
-        st.rerun()

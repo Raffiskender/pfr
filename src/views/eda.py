@@ -51,8 +51,7 @@ def load_hist_plots(df):
             df.shape[0] - df[['is_smoker']].sum().item()
         ]},
         index=['Oui', 'Non'])
-    st.dataframe(df_smokers)
-    
+
     # Medication
     df_medication = pd.DataFrame(
         {'count':[
@@ -182,6 +181,7 @@ def load_view():
     buffer = StringIO()
     df.info(buf=buffer)
     infos = buffer.getvalue()
+
     with st.expander('La sorite de df.info() :'):
         st.code(infos)
     

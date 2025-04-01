@@ -1,5 +1,6 @@
 import streamlit as st
 path = "src/assets/styles/"
+
 def inject_custom_css():
     with open(f'{path}styles.css') as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
