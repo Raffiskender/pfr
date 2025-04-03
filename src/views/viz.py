@@ -57,6 +57,7 @@ def categorial(df):
 def radar(df):
 
     st.title("Analyse avec Graphique en Toile d'Araignée")
+
     # Liste des variables numériques et catégorielles
     select_options_numeric = ['stress_level', 'caffeine_intake', 'sleep_hours', 'physical_activity', 'alcohol_consuption', 'heart_rate_during_attack','breathing_rate','sweating_level', 'therapy_session', 'diet_quality', 'attack_severity']
     select_options_categorical = ['age', 'occupation', 'gender', 'smoking', 'recent_life_event', 'medication', 'family_history']
@@ -68,45 +69,64 @@ def radar(df):
     # Sélectionner les critères de filtrage avec des cases à cocher
     filters = {}
     for option in select_options_categorical:
-        filters[option] = st.checkbox(f"Filtrer par {option}")
-
+        if option == 'age':
+            if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
+                age_range = st.slider(
+                    "Choisissez la plage d'âge", 
+                    int(df[option].min()), 
+                    int(df[option].max()), 
+                    (int(df[option].min()), int(df[option].max())), 
+                    key=f'age_range'
+                )
+                filters[option] = age_range
+                
+        elif option == 'gender':
+            if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
+                selected_gender = st.multiselect(
+                    "Choisissez le sexe", 
+                    df[option].unique(),
+                    default=df[option].unique(),
+                    key=f'select_{option}'
+                )
+                filters[option] = selected_gender
+                
+        elif option == 'occupation':
+            if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
+                selected_occupation = st.multiselect(
+                    "Choisissez le travail", 
+                    df[option].unique(),
+                    default=df[option].unique(),
+                    key=f'select_{option}'
+                )
+                filters[option] = selected_occupation
+                
+        else:
+            if st.checkbox(f'Filtrer par {option}', key=f"filter_{option}"):
+                radio_choice = st.radio(
+                    f"Catégorie {option}", 
+                    options=[f'{option}', f'no {option}'],
+                    key=f'radio_{option}'
+                )
+                filters[option] = radio_choice
+    
+    
     # Appliquer les filtres
-    filtered_df = df
-    for key, is_filter_selected in filters.items():
-        if is_filter_selected:
-            if key == 'gender':
-                selected_gender = st.selectbox("Choisissez le sexe", df[key].unique())
-                filtered_df = filtered_df[filtered_df[key] == selected_gender]
-            else:
-                selected_category = st.selectbox(f"Choisissez la catégorie de {key}", df[key].unique())
-                filtered_df = filtered_df[filtered_df[key] == selected_category]
+    filtered_df = df.copy()
 
-
-
-
+    for key, value in filters.items():
+        if key == 'age':
+            filtered_df = filtered_df[(filtered_df[key] >= value[0]) & (filtered_df['age'] <= value[1])]
+        elif key == 'gender' or key == 'occupation':
+            filtered_df = filtered_df[filtered_df[key].isin(value)]
+        else:
+            filtered_df = filtered_df[filtered_df[key] != value.startswith('no')]
 
 
     # Interface utilisateur
-    st.title("Analyse avec Graphique en Toile d'Araignée")
-
-    # Sélectionner les variables numériques
-    selected_numeric_vars = st.multiselect("Choisissez les variables numériques", select_options_numeric, default=select_options_numeric)
-
-    # Sélectionner le critère de filtrage
-    filter_criterion = st.selectbox("Filtrer par", select_options_categorical)
-
-    # Filtrage des données
-    if filter_criterion == 'age':
-        age_range = st.slider("Choisissez la plage d'âge", int(df['age'].min()), int(df['age'].max()), (int(df['age'].min()), int(df['age'].max())), key='radar_age_range')
-        filtered_df = df[(df['age'] >= age_range[0]) & (df['age'] <= age_range[1])]
-    else:
-        selected_category = st.selectbox(f"Choisissez la catégorie de {filter_criterion}", df[filter_criterion].unique())
-        filtered_df = df[df[filter_criterion] == selected_category]
-
 
     # Calcul des moyennes par catégorie filtrée
-    category_means = filtered_df[selected_numeric_vars].mean()
-    global_means = df[selected_numeric_vars].mean()
+    category_means = filtered_df[select_options_numeric].mean()
+    global_means = df[select_options_numeric].mean()
 
     # Préparer les données pour le radar chart
     labels = category_means.index
@@ -148,7 +168,7 @@ def radar(df):
 
     ax.legend(loc='upper right', labels=['Filtré', 'Global'], bbox_to_anchor=(1.2, 1.1))
     # Affichage
-    st.subheader(f"Graphique en toile d'araignée pour les moyennes des variables sélectionnées ({filter_criterion} : {selected_category if filter_criterion != 'age' else f'{age_range[0]} - {age_range[1]}'})")
+    st.subheader("Graphique en toile d'araignée selon les critères séléctionnés")
     st.pyplot(fig)
 
 
@@ -163,7 +183,6 @@ def load_view():
     df = pd.read_csv('./src/assets/data/clean_data.csv')
     df['occupation'] = df_org['Occupation']
     df['gender'] = df_org['Gender']
-    df['smoking'] = df['smoking'].replace({False:'No', True:'Yes'})
     
     with st.expander('Visualiser les correlations'):
         correlations(df)
