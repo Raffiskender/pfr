@@ -55,7 +55,6 @@ def categorial(df):
     st.pyplot(fig)
 
 def radar(df):
-
     st.title("Analyse avec Graphique en Toile d'Araignée")
 
     # Liste des variables numériques et catégorielles
@@ -64,7 +63,6 @@ def radar(df):
 
     # Sélectionner les variables numériques
     selected_numeric_vars = st.multiselect("Choisissez les variables numériques", select_options_numeric, default=select_options_numeric)
-
 
     # Sélectionner les critères de filtrage avec des cases à cocher
     filters = {}
@@ -111,8 +109,8 @@ def radar(df):
     
     
     # Appliquer les filtres
-    filtered_df = df.copy()
 
+    filtered_df = df.copy()
     for key, value in filters.items():
         if key == 'age':
             filtered_df = filtered_df[(filtered_df[key] >= value[0]) & (filtered_df['age'] <= value[1])]
@@ -120,13 +118,16 @@ def radar(df):
             filtered_df = filtered_df[filtered_df[key].isin(value)]
         else:
             filtered_df = filtered_df[filtered_df[key] != value.startswith('no')]
-
+    st.dataframe(filtered_df)
 
     # Interface utilisateur
 
     # Calcul des moyennes par catégorie filtrée
-    category_means = filtered_df[select_options_numeric].mean()
-    global_means = df[select_options_numeric].mean()
+    category_means = filtered_df[selected_numeric_vars].mean()
+    global_means = df[selected_numeric_vars].mean()
+
+    st.write(category_means)
+    st.write(global_means)
 
     # Préparer les données pour le radar chart
     labels = category_means.index
@@ -138,6 +139,7 @@ def radar(df):
     angles = [n / float(len(labels)) * 2 * np.pi for n in range(len(labels))]
     scalled_values = np.array([])
     scalled_global_values = np.array([])
+
     for value, global_value, label in zip(values, global_values, labels):
         scalled_values = np.append(scalled_values, (value / (df[label].max())))
         scalled_global_values = np.append(scalled_global_values, (global_value / (df[label].max())))
