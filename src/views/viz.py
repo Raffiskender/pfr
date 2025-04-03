@@ -55,10 +55,37 @@ def categorial(df):
     st.pyplot(fig)
 
 def radar(df):
+
+    st.title("Analyse avec Graphique en Toile d'Araignée")
     # Liste des variables numériques et catégorielles
     select_options_numeric = ['stress_level', 'caffeine_intake', 'sleep_hours', 'physical_activity', 'alcohol_consuption', 'heart_rate_during_attack','breathing_rate','sweating_level', 'therapy_session', 'diet_quality', 'attack_severity']
-    select_options_categorical = ['occupation', 'age', 'gender']
-    
+    select_options_categorical = ['age', 'occupation', 'gender', 'smoking', 'recent_life_event', 'medication', 'family_history']
+
+    # Sélectionner les variables numériques
+    selected_numeric_vars = st.multiselect("Choisissez les variables numériques", select_options_numeric, default=select_options_numeric)
+
+
+    # Sélectionner les critères de filtrage avec des cases à cocher
+    filters = {}
+    for option in select_options_categorical:
+        filters[option] = st.checkbox(f"Filtrer par {option}")
+
+    # Appliquer les filtres
+    filtered_df = df
+    for key, is_filter_selected in filters.items():
+        if is_filter_selected:
+            if key == 'gender':
+                selected_gender = st.selectbox("Choisissez le sexe", df[key].unique())
+                filtered_df = filtered_df[filtered_df[key] == selected_gender]
+            else:
+                selected_category = st.selectbox(f"Choisissez la catégorie de {key}", df[key].unique())
+                filtered_df = filtered_df[filtered_df[key] == selected_category]
+
+
+
+
+
+
     # Interface utilisateur
     st.title("Analyse avec Graphique en Toile d'Araignée")
 
