@@ -118,16 +118,12 @@ def radar(df):
             filtered_df = filtered_df[filtered_df[key].isin(value)]
         else:
             filtered_df = filtered_df[filtered_df[key] != value.startswith('no')]
-    st.dataframe(filtered_df)
 
     # Interface utilisateur
 
     # Calcul des moyennes par catégorie filtrée
     category_means = filtered_df[selected_numeric_vars].mean()
     global_means = df[selected_numeric_vars].mean()
-
-    st.write(category_means)
-    st.write(global_means)
 
     # Préparer les données pour le radar chart
     labels = category_means.index
