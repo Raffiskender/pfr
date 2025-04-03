@@ -66,46 +66,49 @@ def radar(df):
 
     # Sélectionner les critères de filtrage avec des cases à cocher
     filters = {}
-    for option in select_options_categorical:
-        if option == 'age':
-            if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
-                age_range = st.slider(
-                    "Choisissez la plage d'âge", 
-                    int(df[option].min()), 
-                    int(df[option].max()), 
-                    (int(df[option].min()), int(df[option].max())), 
-                    key=f'age_range'
-                )
-                filters[option] = age_range
-                
-        elif option == 'gender':
-            if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
-                selected_gender = st.multiselect(
-                    "Choisissez le sexe", 
-                    df[option].unique(),
-                    default=df[option].unique(),
-                    key=f'select_{option}'
-                )
-                filters[option] = selected_gender
-                
-        elif option == 'occupation':
-            if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
-                selected_occupation = st.multiselect(
-                    "Choisissez le travail", 
-                    df[option].unique(),
-                    default=df[option].unique(),
-                    key=f'select_{option}'
-                )
-                filters[option] = selected_occupation
-                
-        else:
-            if st.checkbox(f'Filtrer par {option}', key=f"filter_{option}"):
-                radio_choice = st.radio(
-                    f"Catégorie {option}", 
-                    options=[f'{option}', f'no {option}'],
-                    key=f'radio_{option}'
-                )
-                filters[option] = radio_choice
+    col1, col2 = st.columns(2)
+    with col1:
+        for option in select_options_categorical:
+            if option == 'age':
+                if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
+                    age_range = st.slider(
+                        "Choisissez la plage d'âge", 
+                        int(df[option].min()), 
+                        int(df[option].max()), 
+                        (int(df[option].min()), int(df[option].max())), 
+                        key=f'age_range'
+                    )
+                    filters[option] = age_range
+                    
+            elif option == 'gender':
+                if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
+                    selected_gender = st.multiselect(
+                        "Choisissez le sexe", 
+                        df[option].unique(),
+                        default=df[option].unique(),
+                        key=f'select_{option}'
+                    )
+                    filters[option] = selected_gender
+                    
+            elif option == 'occupation':
+                if st.checkbox(f"Filtrer par {option}", key=f"filter_{option}"):
+                    selected_occupation = st.multiselect(
+                        "Choisissez le travail", 
+                        df[option].unique(),
+                        default=df[option].unique(),
+                        key=f'select_{option}'
+                    )
+                    filters[option] = selected_occupation
+    with col2:
+        for option in select_options_categorical:
+            if option != 'age' and option != 'occupation' and option != 'gender' :
+                if st.checkbox(f'Filtrer par {option}', key=f"filter_{option}"):
+                    radio_choice = st.radio(
+                        f"Catégorie {option}", 
+                        options=[f'{option}', f'no {option}'],
+                        key=f'radio_{option}'
+                    )
+                    filters[option] = radio_choice
     
     
     # Appliquer les filtres
