@@ -158,7 +158,7 @@ def load_hist_plots(df):
         st.pyplot(fig)
 
 
-def load_view():
+def load():
     st.title('Analyse exploratoire des données (EDA)')
     st.markdown(
     '''

@@ -1,6 +1,6 @@
 import streamlit as st
 
-def load_view():
+def load():
     st.title('Conclusion')
     st.markdown(
     '''
