@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def load_view():
+def load():
 
     st.title("Crises d'anxiété")
 
@@ -24,7 +24,7 @@ def load_view():
     
     st.markdown(
     """
-    Ci dessous un extrait du dataframe. Plus de détail sur ces données <a class="link" href="/?page=cleaning" target="_self">ici</a>
+    Ci dessous un extrait du dataframe. Plus de détail sur ces données <a class="link" href="/cleaning" target="_self">ici</a>
 
     """, unsafe_allow_html=True)
 

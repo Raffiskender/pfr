@@ -1,119 +1,88 @@
 import streamlit as st
 from streamlit.components.v1 import html
-
-from src.utils.navigation import Navigation
-from src.controllers.session_manager import SessionManager
-from streamlit_cookies_controller import CookieController
-from src.utils import css_inject
-from src.views import home, viz, cleaning, eda, conclusion, options, login, logout, page_404, page_403, admin
-from src.router import get_route
-
-def load_session():
-    # cookies_ctrl = CookieController()
-    # session = SessionManager()
-    
-    # token = cookies_ctrl.get('user_session')
-    # verification = session.verify_token(token)
-
-    # if token and verification:
-    #     st.session_state.SESSION_LOGGED = True
-    #     st.session_state.IS_ADMIN = verification['is_admin']
-    # else:
-    #     st.session_state.SESSION_LOGGED = False
-
-    # load_page()
-    # st.session_state.SESSION_LOADING = False
-    st.session_state.SESSION_LOGGED = True
-
-def load_page():
-    nav = Navigation()
-    nav.display_navbar()
-    navigation()
-
-def navigation():  
-    route = get_route()
-    
-    match route:
-        case "home":
-            home.load_view()
-        case "login":
-            login.load_view()
-        case "cleaning":
-            if st.session_state.SESSION_LOGGED:
-                cleaning.load_view()
-            else:
-                page_403.load_view()
-        case "eda":
-            if st.session_state.SESSION_LOGGED:
-                eda.load_view()
-            else:
-                page_403.load_view()
-        case "viz":
-            if st.session_state.SESSION_LOGGED:
-                viz.load_view()
-            else:
-                page_403.load_view()
-        case "conclusion":
-            if st.session_state.SESSION_LOGGED:
-                conclusion.load_view()
-            else:
-                page_403.load_view()
-        case "options":
-            if st.session_state.SESSION_LOGGED:
-                options.load_view()
-            else:
-                page_403.load_view()
-        case "logout":
-            if st.session_state.SESSION_LOGGED:
-                logout.load_view()
-            else:
-                page_403.load_view()
-        case _:
-            page_404.load_view()
+from src.router import Router
 
 
-st.set_page_config(layout="wide", page_title='Anxiety attack')
-css_inject.inject_custom_css()
-
-# if 'SESSION_LOGGED' not in st.session_state:
-#     st.session_state.SESSION_LOGGED = False
-#     load_session()
-#     load_page()
-    
-# else:
-load_session()
-load_page()
-
-html(
-'''
-<script>
-    // Suppression du iframe d'en haut
-    window.parent.document.querySelector('.stIFrame').remove();
-
-    // Dropdown hide / show
-
-    var dropdown = window.parent.document.querySelector("img.dropbtn");
-    var dropWindow = window.parent.document.getElementById("myDropdown")
-    dropdown.onclick = () => {
-        if (dropWindow.style.visibility == "hidden"){
-            dropWindow.style.visibility = "visible";
-            window.parent.document.addEventListener('click', (event) => {
-                if (event.target != dropdown ){
-                    dropWindow.style.visibility = "hidden";
-                    }
-            }, once=true);
-        }else{
-            dropWindow.style.visibility = "hidden";
+class Main_page():
+    def __init__(self):
+        self.declare_pages()
+        self.css_path='./src/assets/style'
+        self.run()
+        self.route_match_menu={
+            'home'      :'Accueil',
+            'cleaning'  :'Nettoyage',
+            'eda'       :'Analyse',
+            'viz'       :'Visualisation',
+            'conclusion':'Conclusion'
         }
-    };
+        if "first_page_passed" not in st.session_state:
+            self.navigate_to_first_page()
+            st.session_state["first_page_passed"] = True
 
-    // Burger menu hide / show
-    var burger_btn = window.parent.document.querySelector(".nav_burger_btn");
-    var burger_nav = window.parent.document.querySelector(".navbar_burger");
+    def declare_pages(self):
+        self.pages = [
+            st.Page("./src/views/home.py", default=True),
+            st.Page("./src/views/cleaning.py"),
+            st.Page("./src/views/eda.py"),
+            st.Page("./src/views/viz.py"),
+            st.Page("./src/views/conclusion.py"),
+        ]
 
-    burger_btn.onclick = () => {
-        burger_btn.classList.toggle("active");
-        burger_nav.classList.toggle("active");
-    }
-</script>
-''')
+        self.pg = st.navigation(self.pages)
+
+    def navigation_menu(self):
+        routes = list(self.route_match_menu.keys())
+        menus = list(self.route_match_menu.values())
+
+        st.radio("", options=menus, key='menu')
+        match st.session_state['menu']:
+            case _ if st.session_state['menu'] == menus[0]:
+                Router.redirect(routes[0])
+            case _ if st.session_state['menu'] == menus[1]:
+                Router.redirect(routes[1])
+            case _ if st.session_state['menu'] == menus[2]:
+                Router.redirect(routes[2])
+            case _ if st.session_state['menu'] == menus[3]:
+                Router.redirect(routes[3])
+            case _ if st.session_state['menu'] == menus[4]:
+                Router.redirect(routes[4])
+            case _:
+                Router.redirect('404')
+
+    def navigate_to_first_page(self):
+        destination = Router.get_route()
+        st.session_state.menu = self.route_match_menu.get(destination)
+
+    def load_css(self):
+        with open(f'{self.css_path}/vars.css') as f:
+            st.html(f'<style>{f.read()}</style>')
+        with open(f'{self.css_path}/style.css') as f:
+            st.html(f'<style>{f.read()}</style>')
+        with open(f'{self.css_path}/navigation_style.css') as f:
+            st.html(f'<style>{f.read()}</style>')
+        with open(f'{self.css_path}/texts_style.css') as f:
+            st.html(f'<style>{f.read()}</style>')
+
+    def run(self):
+        self.pg.run()
+
+#-- Lancement de l'appli --#
+st.set_page_config(layout='wide', page_title='Mon app multipage', page_icon=('./src/assets/images/ico.png'))
+app = Main_page()
+app.load_css()
+app.navigation_menu()
+
+
+#-- ici injection de js --#
+html(
+    f"""
+    <script>
+        const labels = window.parent.document.querySelectorAll('div[role="radiogroup"] label');
+            for (const label of labels) {{
+            label.classList.remove('active');
+            if (label.querySelector('div:nth-of-type(2) > div > p').innerHTML === "{st.session_state.menu}") {{
+                label.classList.add('active');
+            }}
+        }}
+    </script>
+""")

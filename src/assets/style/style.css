@@ -1,0 +1,15 @@
+/* barre streamlit */
+*.stAppHeader{
+    display: None;
+}
+
+/* intérieur de la page */
+.stMainBlockContainer{
+    width:75vw;
+    max-width: 1000px;
+    min-width: 300px;
+    margin-inline: auto;
+    /*margin-top: -50px;*/
+}
+
+

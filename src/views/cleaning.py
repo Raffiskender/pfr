@@ -4,7 +4,7 @@ import base64
 import nbformat
 from nbconvert import PythonExporter
 
-def load_view():
+def load():
     st.title('Aquisition, préparation et présentation des données')
 
     df = pd.read_csv('./src/assets/data/anxiety_attack_dataset.csv')

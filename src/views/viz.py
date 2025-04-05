@@ -173,7 +173,7 @@ def radar(df):
     st.pyplot(fig)
 
 
-def load_view():
+def load():
     st.title('Visualisation')
     st.write(
     '''
