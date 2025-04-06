@@ -1,6 +1,6 @@
 import streamlit as st
 from src.views import home, cleaning, eda, viz, conclusion, page_404
-# import main
+from ROUTES import ROUTES_MATCH_MENU
 
 class Router:
     def __init__(self):
@@ -13,13 +13,7 @@ class Router:
         return url
     
     def redirect(new_route):
-        routes = [
-            'home',
-            'cleaning',
-            'eda',
-            'viz',
-            'conclusion'
-        ]
+        routes = list(ROUTES_MATCH_MENU.keys())
 
         match new_route:
             case _ if new_route == routes[0]:
