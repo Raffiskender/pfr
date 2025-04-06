@@ -107,4 +107,5 @@ def load():
         """
         Ce code a été mis dans un fichier d\'extension .py qui doit être executé manuellement (`python3 data_to_db.py`).
     """)
-        
+
+load()

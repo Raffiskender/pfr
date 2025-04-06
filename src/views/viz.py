@@ -191,3 +191,5 @@ def load():
         categorial(df)
     with st.expander('visualiser les moyennes filtrées'):
         radar(df)
+
+load()
