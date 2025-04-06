@@ -211,3 +211,5 @@ def load():
     st.write('Nous avons pu voir la répartition via les box-plots sur les colonnes à chiffres. Voyons à présent celle sur les colonnes binaires')
 
     load_hist_plots(df)
+
+load()

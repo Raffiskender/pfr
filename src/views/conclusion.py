@@ -24,6 +24,7 @@ def load():
         - **Analyser les moyennes des variables** filtrées, avec une **visualisation radar** permettant une comparaison facile entre les différentes catégories.  
 
 
-        🏆 **Nos données sont désormais propres, analysables et prêtes pour des insights !** 🔥  
+        🏆 **Nos données sont désormais propres, analysables et prêtes pour des insights !**
 
     ''')
+load()
