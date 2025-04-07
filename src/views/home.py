@@ -42,58 +42,58 @@ def load():
     # df données pour les graphiques :
     
     #Les genres
-    # df_gender = df[['gender_Female', 'gender_Male', 'gender_Other']].sum()
-    # #Le travail
-    # df_job = df[['occupation_Doctor', 'occupation_Engineer', 'occupation_Other', 'occupation_Student', 'occupation_Teacher', 'occupation_Unemployed']].sum()
+    df_gender = df[['gender_Female', 'gender_Male', 'gender_Other']].sum()
+    #Le travail
+    df_job = df[['occupation_Doctor', 'occupation_Engineer', 'occupation_Other', 'occupation_Student', 'occupation_Teacher', 'occupation_Unemployed']].sum()
 
-    # #Les ages
-    # age_tranches = ((11, 20), (21, 30), (31, 40), (41, 50), (51, 60), (61, 70))
-    # df_age = pd.DataFrame()
-    # for tranche in age_tranches:
-    #     df_age[f'{tranche[0]}-{tranche[1]}'] = [df['age'][(tranche[0] < df['age']) & (df['age'] < tranche[1])].count()]
+    #Les ages
+    age_tranches = ((11, 20), (21, 30), (31, 40), (41, 50), (51, 60), (61, 70))
+    df_age = pd.DataFrame()
+    for tranche in age_tranches:
+        df_age[f'{tranche[0]}-{tranche[1]}'] = [df['age'][(tranche[0] < df['age']) & (df['age'] < tranche[1])].count()]
     
-    # df_age = df_age.melt(var_name='Age Range', value_name='count')
+    df_age = df_age.melt(var_name='Age Range', value_name='count')
     
-    # #Les fumeurs
-    # df_smokers = pd.DataFrame(
-    #     {'count':[
-    #         df[['smoking']].sum(),
-    #         df.shape[0] - df[['smoking']].sum()
-    #     ]},
-    #     index=['Smoker', 'Non smoker'])
+    #Les fumeurs
+    df_smokers = pd.DataFrame(
+        {'count':[
+            df[['smoking']].sum(),
+            df.shape[0] - df[['smoking']].sum()
+        ]},
+        index=['Smoker', 'Non smoker'])
 
-    # fig, axes = plt.subplots(5, 2, figsize=(10, 15))
+    fig, axes = plt.subplots(5, 2, figsize=(10, 15))
 
-    # plt.rcParams.update({'font.size':   11,    # Taille des titres des axes
-    #                  'axes.labelsize':  11,          # Taille des labels des axes
-    #                  'xtick.labelsize': 11,         # Taille des labels des ticks X
-    #                  'ytick.labelsize': 11,         # Taille des labels des ticks Y
-    #                  'legend.fontsize': 11})        # Taille de la légende
+    plt.rcParams.update({'font.size':   11,    # Taille des titres des axes
+                     'axes.labelsize':  11,          # Taille des labels des axes
+                     'xtick.labelsize': 11,         # Taille des labels des ticks X
+                     'ytick.labelsize': 11,         # Taille des labels des ticks Y
+                     'legend.fontsize': 11})        # Taille de la légende
 
-    # plt.subplots_adjust(hspace=1, wspace=0.5)
+    plt.subplots_adjust(hspace=1, wspace=0.5)
 
-    # colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6']
+    colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6']
     
-    # # Répartition des genres
+    # Répartition des genres
     
-    # axes[0, 0].set_title("Répartition des genres")
-    # labels = ['Female', 'Male', 'Other']
-    # axes[0, 0].pie(df_gender, labels=labels, colors=colors, autopct='%1.1f%%')
+    axes[0, 0].set_title("Répartition des genres")
+    labels = ['Female', 'Male', 'Other']
+    axes[0, 0].pie(df_gender, labels=labels, colors=colors, autopct='%1.1f%%')
 
-    # # Répartition du travail
-    # axes[0, 1].set_title("Répartition du travail")
-    # labels = ['Doctors', 'Engineers', 'Others', 'Students', 'Teachers', 'Unemployed']
-    # axes[0, 1].pie(df_job, labels=labels, colors=colors, autopct='%1.1f%%')
+    # Répartition du travail
+    axes[0, 1].set_title("Répartition du travail")
+    labels = ['Doctors', 'Engineers', 'Others', 'Students', 'Teachers', 'Unemployed']
+    axes[0, 1].pie(df_job, labels=labels, colors=colors, autopct='%1.1f%%')
    
-    # # Répartition des ages
-    # axes[1, 0].set_title("Répartition des ages")
-    # labels = ['11-20', '21-30', '31-40', '41-50', '51-60', '61-70']
-    # axes[1, 0].pie(df_age['count'], labels=labels, colors=colors, autopct='%1.1f%%')
+    # Répartition des ages
+    axes[1, 0].set_title("Répartition des ages")
+    labels = ['11-20', '21-30', '31-40', '41-50', '51-60', '61-70']
+    axes[1, 0].pie(df_age['count'], labels=labels, colors=colors, autopct='%1.1f%%')
     
-    # # Répartition des fumeurs
-    # axes[1, 1].set_title("Répartition des fumeurs")
-    # labels = ['Fumeurs', 'Non fumeurs']
-    # axes[1, 1].pie(df_smokers['count'], labels=labels, colors=colors, autopct='%1.1f%%')
+    # Répartition des fumeurs
+    axes[1, 1].set_title("Répartition des fumeurs")
+    labels = ['Fumeurs', 'Non fumeurs']
+    axes[1, 1].pie(df_smokers['count'], labels=labels, colors=colors, autopct='%1.1f%%')
 
 
     # #heures de someil :
@@ -132,8 +132,8 @@ def load():
     #             transform=axes[4, 1].transAxes, fontsize=10, alpha=0.9, color='black')
     # axes[4, 1].hist(df['diet_quality'], edgecolor='white', bins=10)
 
-    # plt.tight_layout()
-    # st.pyplot(fig)
+    plt.tight_layout()
+    st.pyplot(fig)
 
 
     st.markdown(
