@@ -14,7 +14,6 @@ MENUS_LABEL_MATCH_ROUTES={
     'Logout'        :'logout',
 }
 
-
 PAGES = []
 for key, value in MENUS_LABEL_MATCH_ROUTES.items():
     if key == "Accueil":
