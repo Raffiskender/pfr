@@ -3,13 +3,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9;
-    padding:0;
-    margin:0;
+    z-index: 3;
     height: 55px;
     width: 100%;
     margin:auto;
     background-color: rgb(90, 90, 90);
+
 }
 
 /* Effacer le label du 1er menu */
@@ -19,26 +18,21 @@
 
 
 div[role="radiogroup"]{
-    padding:0;
-    margin:0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 1em;
-}
+    position: relative;
 
+}
 
 div[role="radiogroup"] label{
-    padding:0;
-    margin:0;
     height: 55px;
+    transition: 0.35s;
+    margin: 0 !important;
 }
 
-div[role="radiogroup"] label:hover,
-div[role="radiogroup"] label.active{
-    background-color: rgb(122, 122, 122);
-}
 
 /* invisibiliser le boutton du radio input */
 div[role="radiogroup"] > label > div:first-of-type{
@@ -46,18 +40,221 @@ div[role="radiogroup"] > label > div:first-of-type{
 }
 
 /* Texte des inputs */
-div[role="radiogroup"] > label > div:nth-of-type(2) > div{
-    
+div[role="radiogroup"] > label > div:nth-of-type(n+2) > div{
     display: flex;
     align-items: center;
     justify-content: center;
     height: 55px;
+    padding:0.5em 0.75em;
 }
 
-div[role="radiogroup"] > label > div:nth-of-type(2) > div > p{
-    /*border: 3px solid green;*/
-    padding:0.5em 0.75em;
-    margin:0;
+div[role="radiogroup"] > label > div:nth-of-type(n+2) > div > p{
+    /* border: 3px solid green; */
     color: white;
-    font-size: 1.5em;
+    font-size: 1.2em;
+}
+
+/*positionnement du menu des paramètres */
+div[role="radiogroup"] label:nth-of-type(n+7) {
+    position:absolute;
+    background-color: brown;
+    width: 150px !important;
+    right: 0px;
+    margin: 0;
+    transform: translateX(150px);
+    transition: 0.35s;
+}
+
+div[role="radiogroup"] label:nth-of-type(n+7) div{
+    width: 100%;
+}
+div[role="radiogroup"] label:nth-of-type(n+7) div p{
+    text-align: right;
+    width: 100%;
+}
+
+div[role="radiogroup"] label:nth-of-type(n+7){
+    width: 100%;
+}
+
+div[role="radiogroup"] label:nth-of-type(7) {
+    top:calc(1 * 55px)
+}
+div[role="radiogroup"] label:nth-of-type(8) {
+    top:calc(2 * 55px)
+}
+div[role="radiogroup"] label:nth-of-type(9) {
+    top:calc(3 * 55px)
+}
+div[role="radiogroup"] label:nth-of-type(10) {
+    top:calc(4 * 55px)
+}
+div[role="radiogroup"] label:nth-of-type(11) {
+    top:calc(5 * 55px)
+}
+
+div[role="radiogroup"] label:nth-of-type(n+7).show_menu{
+    transform: translateX(0px);
+}
+
+button.plus_menu{
+    margin:0 !important;
+    padding: 0 !important;
+    height: 55px;
+    aspect-ratio: 1;
+    display: block;
+    position: fixed;
+    top:0;
+    right: 0;
+    z-index: 5;
+    border-radius:50%;
+    transform: scale(0.8);
+    transition: 0.35s;
+    color: transparent;
+    background-color: transparent;
+    border:none;
+    margin:0
+}
+
+button.plus_menu.active{
+    transform: scale(0.8) rotate(45deg);
+    background-color: rgb(122, 122, 122);
+}
+button.plus_menu:hover,
+button.plus_menu:focus,
+div[role="radiogroup"] label:hover,
+div[role="radiogroup"] label:focus,
+div[role="radiogroup"] label.active{
+    background-color: rgb(122, 122, 122);
+}
+
+/* Burger */
+
+.nav_burger_btn{  
+    display: none;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    z-index:999;
+    overflow: hidden;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.nav_burger_btn .burger_bar {
+    z-index:9;
+    width: 30px;
+    height: 4px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav_burger_btn .burger_bar:nth-of-type(1) {
+    opacity: 1;
+}
+.nav_burger_btn .burger_bar:nth-of-type(2) {
+    top: calc(50% - 9px);
+}
+.nav_burger_btn .burger_bar:nth-of-type(3) {
+    top: calc(50% + 9px);
+}
+
+.nav_burger_btn.active .burger_bar:nth-of-type(1) {
+    opacity: 0;
+}
+.nav_burger_btn.active .burger_bar:nth-of-type(2) {
+    top: 50%;
+    transform: translate(-50%, 0%) rotate(45deg);  
+}
+.nav_burger_btn.active .burger_bar:nth-of-type(3) {
+    top: 50%;
+    transform: translate(-50%, 0%) rotate(-45deg); 
+}
+
+@media  screen and (width < 860px) {
+    div[role="radiogroup"]{
+        gap:0;
+    }
+    div[role="radiogroup"] > label > div:nth-of-type(n+2) > div{
+        padding:0.25em 0.5em;
+    }
+    div[role="radiogroup"] > label > div:nth-of-type(n+2) > div > p{
+        font-size: 1em;
+    }
+}
+
+@media screen and (width < 600px){
+
+    /* Reseting menu so be on column */
+    button.plus_menu{
+        display: none;
+    }
+
+    .stRadio:first-of-type,
+    .stRadio:first-of-type * {
+        all: unset;
+    }
+    
+    div[role="radiogroup"] label{
+        all: unset;
+    }
+
+    div[role="radiogroup"] label:nth-of-type(n+7){
+        all:unset
+    }
+
+    div[role="radiogroup"] label:hover,
+    div[role="radiogroup"] label:focus{
+        background-color: rgb(122, 122, 122);
+    }
+
+
+
+    .stRadio:first-of-type{
+        position: fixed;
+        top:55px;
+        right:0;
+        background-color: hsla(32, 100%, 50%, 0.9);
+        transition: 0.35s;
+        transform: translateX(150px);
+    }
+
+    .stRadio:first-of-type > div[role="radiogroup"]{
+        display: flex;
+        flex-direction: column;
+        width: 150px;
+        cursor: pointer;
+    }
+    
+    div[role="radiogroup"] > label > div:nth-of-type(n+2) > div{
+        justify-content: end;
+        width:150px;
+        overflow-y:auto;
+        margin: 0 ;
+        padding: 0 ;
+        
+    }
+    
+    div[role="radiogroup"] > label > div:nth-of-type(n+2) > div > p{
+        width: 100%;
+        margin-right: 1.0em;
+        text-align: right;
+        font-size: 1.2em;
+    }
+    
+    .stRadio:first-of-type.active{
+        transform: translateX(0px);
+    }
+
+    /* Burger apparition */
+    .nav_burger_btn{  
+        display: block;
+    }
+
 }

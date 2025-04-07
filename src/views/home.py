@@ -57,8 +57,8 @@ def load():
     #Les fumeurs
     df_smokers = pd.DataFrame(
         {'count':[
-            df[['smoking']].sum(),
-            df.shape[0] - df[['smoking']].sum()
+            df[['smoking']].sum().item(),
+            df.shape[0] - df[['smoking']].sum().item()
         ]},
         index=['Smoker', 'Non smoker'])
 
@@ -96,41 +96,41 @@ def load():
     axes[1, 1].pie(df_smokers['count'], labels=labels, colors=colors, autopct='%1.1f%%')
 
 
-    # #heures de someil :
-    # axes[2, 0].set_title("Répartition des heures de sommeil")
-    # axes[2, 0].text(0.8, 0.2, f'min : {df['sleep_hours'].min()}\n max : {df['sleep_hours'].max()}\n moy : {round(df['sleep_hours'].mean(), 2)}', ha='center', va='center', 
-    #             transform=axes[2, 0].transAxes, fontsize=10, alpha=0.9, color='black')
-    # axes[2, 0].hist(df['sleep_hours'], bins=7, edgecolor='white')
+    #heures de someil :
+    axes[2, 0].set_title("Répartition des heures de sommeil")
+    axes[2, 0].text(0.8, 0.2, f'min : {df['sleep_hours'].min()}\n max : {df['sleep_hours'].max()}\n moy : {round(df['sleep_hours'].mean(), 2)}', ha='center', va='center', 
+                transform=axes[2, 0].transAxes, fontsize=10, alpha=0.9, color='black')
+    axes[2, 0].hist(df['sleep_hours'], bins=7, edgecolor='white')
 
-    # #activités phy
-    # axes[2, 1].set_title("Répartition des activités physiques")
-    # axes[2, 1].text(0.8, 0.2, f'min : {df['physical_activity'].min()}\n max : {df['physical_activity'].max()}\n moy : {round(df['physical_activity'].mean(), 2)}', ha='center', va='center', 
-    #             transform=axes[2, 1].transAxes, fontsize=10, alpha=0.9, color='black')
-    # axes[2, 1].hist(df['physical_activity'], bins=10, edgecolor='white')
+    #activités phy
+    axes[2, 1].set_title("Répartition des activités physiques")
+    axes[2, 1].text(0.8, 0.2, f'min : {df['physical_activity'].min()}\n max : {df['physical_activity'].max()}\n moy : {round(df['physical_activity'].mean(), 2)}', ha='center', va='center', 
+                transform=axes[2, 1].transAxes, fontsize=10, alpha=0.9, color='black')
+    axes[2, 1].hist(df['physical_activity'], bins=10, edgecolor='white')
 
-    # #caféine intake
-    # axes[3, 0].set_title("Répartition de la conso de café (mg/jour)")
-    # axes[3, 0].text(0.8, 0.2, f'min : {df['caffeine_intake'].min()}\n max : {df['caffeine_intake'].max()}\n moy : {round(df['caffeine_intake'].mean(), 2)}', ha='center', va='center', 
-    #             transform=axes[3, 0].transAxes, fontsize=10, alpha=0.9, color='black')
-    # axes[3, 0].hist(df['caffeine_intake'], bins=25, edgecolor='white')
+    #caféine intake
+    axes[3, 0].set_title("Répartition de la conso de café (mg/jour)")
+    axes[3, 0].text(0.8, 0.2, f'min : {df['caffeine_intake'].min()}\n max : {df['caffeine_intake'].max()}\n moy : {round(df['caffeine_intake'].mean(), 2)}', ha='center', va='center', 
+                transform=axes[3, 0].transAxes, fontsize=10, alpha=0.9, color='black')
+    axes[3, 0].hist(df['caffeine_intake'], bins=25, edgecolor='white')
 
-    # #conso alcool
-    # axes[3, 1].set_title("Répartition de la conso d'alcool (verre/semaine)")
-    # axes[3, 1].text(0.8, 0.2, f'min : {df['alcohol_consuption'].min()}\n max : {df['alcohol_consuption'].max()}\n moy : {round(df['alcohol_consuption'].mean(), 2)}', ha='center', va='center', 
-    #             transform=axes[3, 1].transAxes, fontsize=10, alpha=0.9, color='black')
-    # axes[3, 1].hist(df['alcohol_consuption'], bins=20, edgecolor='white')
+    #conso alcool
+    axes[3, 1].set_title("Répartition de la conso d'alcool (verre/semaine)")
+    axes[3, 1].text(0.8, 0.2, f'min : {df['alcohol_consuption'].min()}\n max : {df['alcohol_consuption'].max()}\n moy : {round(df['alcohol_consuption'].mean(), 2)}', ha='center', va='center', 
+                transform=axes[3, 1].transAxes, fontsize=10, alpha=0.9, color='black')
+    axes[3, 1].hist(df['alcohol_consuption'], bins=20, edgecolor='white')
 
-    # # Répartition du sucre
-    # axes[4, 0].set_title("Répartition du sucre")
-    # axes[4, 0].text(0.8, 0.2, f'min : {df['sweating_level'].min()}\n max : {df['sweating_level'].max()}\n moy : {round(df['sweating_level'].mean(), 2)}', ha='center', va='center', 
-    #             transform=axes[4, 0].transAxes, fontsize=10, alpha=0.9, color='black')
-    # axes[4, 0].hist(df['sweating_level'], edgecolor='white', bins=5)
+    # Répartition du sucre
+    axes[4, 0].set_title("Répartition du sucre")
+    axes[4, 0].text(0.8, 0.2, f'min : {df['sweating_level'].min()}\n max : {df['sweating_level'].max()}\n moy : {round(df['sweating_level'].mean(), 2)}', ha='center', va='center', 
+                transform=axes[4, 0].transAxes, fontsize=10, alpha=0.9, color='black')
+    axes[4, 0].hist(df['sweating_level'], edgecolor='white', bins=5)
     
-    # #répartition de l'alimentation
-    # axes[4, 1].set_title("Répartition de l'alimentation")
-    # axes[4, 1].text(0.8, 0.2, f'min : {df['diet_quality'].min()}\n max : {df['diet_quality'].max()}\n moy : {round(df['diet_quality'].mean(), 2)}', ha='center', va='center', 
-    #             transform=axes[4, 1].transAxes, fontsize=10, alpha=0.9, color='black')
-    # axes[4, 1].hist(df['diet_quality'], edgecolor='white', bins=10)
+    #répartition de l'alimentation
+    axes[4, 1].set_title("Répartition de l'alimentation")
+    axes[4, 1].text(0.8, 0.2, f'min : {df['diet_quality'].min()}\n max : {df['diet_quality'].max()}\n moy : {round(df['diet_quality'].mean(), 2)}', ha='center', va='center', 
+                transform=axes[4, 1].transAxes, fontsize=10, alpha=0.9, color='black')
+    axes[4, 1].hist(df['diet_quality'], edgecolor='white', bins=10)
 
     plt.tight_layout()
     st.pyplot(fig)
