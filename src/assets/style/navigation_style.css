@@ -120,6 +120,7 @@ button.plus_menu.active{
     transform: scale(0.8) rotate(45deg);
     background-color: rgb(122, 122, 122);
 }
+
 button.plus_menu:hover,
 button.plus_menu:focus,
 div[role="radiogroup"] label:hover,
