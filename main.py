@@ -2,7 +2,6 @@ import streamlit as st
 from streamlit.components.v1 import html
 from src.utils.navigation_menu import Navigation_menu
 from VARS import PAGES
-import base64
 
 class Main_page():
     def __init__(self):
@@ -87,6 +86,5 @@ app.load_css()
 
 navigation = Navigation_menu()
 navigation.load_menu(app.get_page())
-# navigation.option_menu()
 
 app.load_js()
