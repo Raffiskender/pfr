@@ -1,5 +1,6 @@
 from src.models.database import Database
 import pandas as pd
+
 class DataModel(Database):
     def __init__(self):
         super().__init__()

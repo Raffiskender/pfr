@@ -1,12 +1,11 @@
 import streamlit as st
-
-MENUS_LABEL_MATCH_ROUTES={
+MENUS_LABEL_MATCH_ROUTES = {
     'Accueil'       :'home',
     'Nettoyage'     :"cleaning",
     'Analyse'       :"eda",
     'Visualisations':"viz",
     'Conclusion'    :"conclusion",
-    'Admin'         :"admin",
+    'Admin'         :'admin',
     'Login'         :"login",
     'Signin'        :"signin",
     'Options'       :"options",

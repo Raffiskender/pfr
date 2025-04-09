@@ -1,33 +1,41 @@
 import streamlit as st
-# from src.controllers.auth import auth
-# from src.controllers.signup import signup
+from src.controllers.user_controller import UserController
+from src.controllers.session_controller import SessionController
+import time
 
-# from src.router import redirect
-
-def load():
-    st.title('Login')
-
-load()
+st.title('Login page')
 
 
 
-# Initialiser le gestionnaire de session
+with st.form("login_form"):
+    user = False
+    st.write("Entrez vos identifiants")
+    login = st.text_input("login")
+    passwd = st.text_input(label='Mot de passe', type="password")
 
-#session = SessionManager()
-# Interface Streamlit
-# st.title("🔐 Connexion avec token JWT (via SessionManager)")
+    if st.form_submit_button('envoyer', use_container_width=True):
+        user = UserController().login(login, passwd)
 
-# if "user" not in st.session_state:
-#     st.session_state["user"] = None
+    #retour positif de la db
+    if isinstance(user, dict):
+        st.session_state['is_logged'] = True
+        persist = SessionController().persist(user)
+        st.session_state['user'] = user
 
-# token = session.get_cookie()
-# user_data = session.verify_token(token) if token else None
+        if persist[0]:
+            st.write(f"Bonjour {user.get('username').capitalize()}")
+            st.session_state['next_page'] = 'Accueil'
+        else:
+            st.write(f'Vous êtes connectés en mode dégradé : {persist[1]}')
 
-# if user_data:
-#     st.session_state["user"] = user_data["user"]
-#     st.success(f"✅ Connecté en tant que {st.session_state['user']}")
-#     if st.button("Se déconnecter"):
-#         session.delete_cookie()
-#         st.session_state["user"] = None
-#         st.rerun()
+    # valeur par défault
+    elif user is False:
+        st.warning('Entrez un login et un mot de passe')
 
+    # retour null de la db
+    elif user is None :
+        st.error('Identifiants incorrects')
+
+    # Cas d'erreur
+    else:
+        st.write(user)

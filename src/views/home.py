@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def load():
-
+    st.write(st.session_state)
     st.title("Crises d'anxiété")
 
     st.markdown(
@@ -24,7 +24,7 @@ def load():
     
     st.markdown("Çi dessous un extrait du dataframe. Pour plus de détails sur ces données, cliquez sur le lien ci-dessous")
 
-    st.page_link("./src/views/cleaning.py", label='Lien vers la page détaillée')
+    # st.page_link("./src/views/cleaning.py", label='Lien vers la page détaillée')
 
 
 

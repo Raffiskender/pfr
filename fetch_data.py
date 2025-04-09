@@ -1,5 +1,4 @@
 from src.models.database import Database
-from src.models.session import Session
 import pandas as pd
 
 with Database() as db:

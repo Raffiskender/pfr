@@ -1,5 +1,5 @@
 from src.models.data_model import DataModel
-from src.models.session import Session
+# from src.models.session import Session
 import pandas as pd
 
 df = pd.read_csv("./src/assets/data/clean_data.csv")

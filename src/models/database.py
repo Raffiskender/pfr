@@ -5,6 +5,7 @@ class Database :
     def __init__(self) -> None:
         self.__db_path = "project.db"
         self.__db = None
+        self.users_table = "users"
 
     def __enter__(self):
         self.__db = sqlite3.connect(self.__db_path)
@@ -14,30 +15,39 @@ class Database :
         if self.__db:
             self.__db.close()
 
-    def setup(self):
-        self.execute("""CREATE TABLE IF NOT EXISTS users(
-                     uid INTEGER PRIMARY KEY UNIQUE,
-                     email VARCHAR UNIQUE,
-                     name VARCHAR UNIQUE,
-                     is_admin BOOLEAN,
-                     is_activated BOOLEAN,
-                     password VARCHAR)""", ())
+    def setup_users_table(self):
+        self.execute(
+        f'''
+            CREATE TABLE IF NOT EXISTS {self.users_table}(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username VARCHAR UNIQUE,
+                email INTEGER UNIQUE,
+                first_name INTEGER,
+                last_name INTEGER,
+                password INTEGER,
+                roles VARCHAR
+                )
+        ''', ())
+        self.commit()
+        print('tables created')
+        print(self.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall())
         
-        self.execute("""CREATE TABLE IF NOT EXISTS logs(
-                     id INTEGER PRIMARY KEY UNIQUE,
-                     uid INTERGER,
-                     action VARCHAR,
-                     value VARCHAR)""", ())
+    def create_user_raffi(self):
+        # The hash method from Hasher class is the one used by streamlit-authenticator.
         try:
-            self.execute("INSERT INTO users (email, password, name, is_admin, is_activated) VALUES (?, ?, ?, ?, ?)", ('admin', hashlib.sha256("Admin1234".encode(encoding="utf-32")).hexdigest(), "Admin", 0, 0))
-            print("Admin user Created")
+            self.execute(f"""INSERT INTO {self.users_table} (username, email, password, roles)
+                VALUES (?, ?, ?, ?)
+                """, ('raffi', 'raf@sken.com', hashlib.sha256("123".encode(encoding="utf-32")).hexdigest(), "['viewer', 'admin']"))
+            self.commit()
+            print('utilisateur "raffi" créé avec succès')
         except Exception as e:
-            print("Admin already exists.")
-            print(e)
+            print(f"Erreur : {e}")
+
+    def drop_users_table(self):
+        self.execute(f"DROP TABLE IF EXISTS {self.users_table}")
         self.commit()
 
-
-    def drop(self):
+    def drop_all_tables(self):
         self.execute("DROP TABLE IF EXISTS patient, health, life_style, attack, users, logs")
         self.commit()
 

@@ -3,29 +3,39 @@ from VARS import MENUS_LABEL_MATCH_ROUTES
 import base64
 
 class Navigation_menu():
-    def __init__(self):
+    def __init__(self, page):
+        self.page = page
         self.menu_labels=list(MENUS_LABEL_MATCH_ROUTES.keys())
         self.routes=list(MENUS_LABEL_MATCH_ROUTES.values())
 
-    def load_menu(self, page):
-        self.main_menu(page)
+        self.switch_page()
+        self.load_menu()
+
+    def load_menu(self):
+        self.main_menu()
         self.option_menu()
         self.burger_menu()
 
-    def main_menu(self, page):
+    def main_menu(self):
         st.radio(label="Menu",
                  options=self.menu_labels,
                  key='menu',
-                 index=self.menu_labels.index(page._title),
+                 index=self.menu_labels.index(self.page._title),
                  label_visibility='hidden',
-                 on_change=self.redirect()
+                 on_change=self.redirect
                  )
     
     def redirect(self):
-        if 'menu' in st.session_state:
-            for index, value in enumerate(self.menu_labels):
-                if st.session_state.menu == value:
-                    st.switch_page(f"src/views/{self.routes[index]}.py")
+        print('changed - from redirect')
+        st.session_state['next_page'] = st.session_state['menu']
+    
+    def switch_page(self):
+        if "next_page" in st.session_state:
+            page = st.session_state["next_page"]
+            del st.session_state["next_page"]
+            if page in self.menu_labels:
+                route = self.routes[self.menu_labels.index(page)]
+                st.switch_page(f"src/views/{route}.py")
     
     def option_menu(self):
         with open("src/assets/images/plus.png", "rb") as plus_sign:

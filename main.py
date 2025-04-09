@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit.components.v1 import html
 from src.utils.navigation_menu import Navigation_menu
+from src.controllers.session_controller import SessionController
 from VARS import PAGES
 
 class Main_page():
@@ -10,10 +11,14 @@ class Main_page():
         self.run()
 
     def init_navigation(self):
-       return st.navigation(PAGES, position="sidebar", expanded=True)
+        return st.navigation(PAGES)
 
     def get_page(self):
         return self.page
+
+    def check_session(self):
+        session = SessionController()
+        session.check_user()
 
     def load_css(self):
         with open(f'{self.css_path}/vars.css') as f:
@@ -81,10 +86,10 @@ class Main_page():
 #-- Lancement de l'appli --#
 st.set_page_config(layout='wide')
 
-app = Main_page()
-app.load_css()
+with st.spinner('loading, please wait...'):
+    app = Main_page()
+    app.check_session()
+    app.load_css()
+    navigation = Navigation_menu(app.get_page())
+    app.load_js()
 
-navigation = Navigation_menu()
-navigation.load_menu(app.get_page())
-
-app.load_js()
