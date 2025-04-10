@@ -7,6 +7,4 @@ from src.models.database import Database
 #         ).fetchall())
 
 with Database() as db:
-    db.drop_users_table()
-    db.setup_users_table()
     db.create_user_raffi()

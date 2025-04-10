@@ -1,11 +1,7 @@
 import datetime
 import jwt
-from src.models.database import Database
 from dotenv import load_dotenv
 import os
-
-from streamlit_cookies_controller import CookieController
-
 
 class SessionModel:
     def __init__(self):

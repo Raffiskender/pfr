@@ -37,9 +37,9 @@ class Database :
         try:
             self.execute(f"""INSERT INTO {self.users_table} (username, email, password, roles)
                 VALUES (?, ?, ?, ?)
-                """, ('raffi', 'raf@sken.com', hashlib.sha256("123".encode(encoding="utf-32")).hexdigest(), "['viewer', 'admin']"))
+                """, ('Mika', 'mika@sken.com', hashlib.sha256("123".encode(encoding="utf-32")).hexdigest(), "['viewer']"))
             self.commit()
-            print('utilisateur "raffi" créé avec succès')
+            print('utilisateur "Mika" créé avec succès')
         except Exception as e:
             print(f"Erreur : {e}")
 

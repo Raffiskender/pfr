@@ -12,15 +12,11 @@ class SessionController:
             cookies_ctrl = CookieController()
             cookies_ctrl.set(self.cookie_name, SessionModel().create_token(user))
             # Patienter 50ms le temps de la création du cookie avant le changement de page
-            time.sleep(0.5) 
+            time.sleep(0.5)
+
             return True,
         except Exception as e:
             return False, e
-        
-    def retrieve_user_cookie(self):
-        print()
-        
-
     
     def check_user(self):
         try:
@@ -28,7 +24,7 @@ class SessionController:
             if token:
                 try :
                     user = SessionModel().decode_token(token)
-                    self.persist_user(user)
+                    return(user)
                 except Exception as e:
                     print(e)
                     return token
@@ -38,14 +34,15 @@ class SessionController:
             print(f"Pas de cookie nommé {e}")
 
         return False
-
-    def persist_user(self, user):
-        st.session_state['user'] = {
-                'id' : user['id'],
-                'username' : user['username'],
-                'email' : user['email'],
-                'roles' : user['roles']
-            }
-        st.session_state['is_logged'] = True
-
-            
+    
+    def logout(self):
+        st.session_state['user'] = None
+        print("from session_controler : sst_User : ", st.session_state['user'])
+        self.remove_user_cookie()
+        
+    def remove_user_cookie(self):
+        cookies_ctrl = CookieController()
+        try:
+            cookies_ctrl.remove(self.cookie_name)
+        except Exception as e:
+            print(f'Erreur : {e}')
