@@ -3,15 +3,15 @@ import streamlit as st
 # import yaml
 # from yaml.loader import SafeLoader
 from src.models.user_model import UserModel
-from dotenv import load_dotenv
-import os
 
 class UserController:
-    def __init__(self):
-        pass
+    def __init__(self, username, password, email=''):
+        self.username = username
+        self.password=password
+        self.email=email
 
-    def login(self, login, password):
-        with UserModel(login, password) as db:
+    def login(self):
+        with UserModel(self.username, self.password) as db:
             user = db.find_by_email_or_username()
 
         if isinstance(user, UserModel):
@@ -22,3 +22,11 @@ class UserController:
                 'roles' : user.get_roles()
             }
         else : return user
+    
+    def create_user(self):
+        with UserModel(self.username, self.password, self.email) as db:
+            new_user = db.insert_new_user()
+        if isinstance(new_user, UserModel):
+            del new_user
+            return True,
+        else: return False, new_user # as an error

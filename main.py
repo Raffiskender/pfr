@@ -8,7 +8,6 @@ class Main_page():
     def __init__(self):
         self.css_path='./src/assets/style'
         self.check_session()
-
         self.page = Navigation().user_navigation()
         self.run()
 
@@ -30,14 +29,16 @@ class Main_page():
             else : st.session_state['user'] = None
 
     def load_css(self):
-        with open(f'{self.css_path}/vars.css') as f:
+        with open(f'{self.css_path}/new_style.css') as f:
             st.html(f'<style>{f.read()}</style>')
-        with open(f'{self.css_path}/style.css') as f:
-            st.html(f'<style>{f.read()}</style>')
-        with open(f'{self.css_path}/navigation_style.css') as f:
-            st.html(f'<style>{f.read()}</style>')
-        with open(f'{self.css_path}/texts_style.css') as f:
-            st.html(f'<style>{f.read()}</style>')
+        # with open(f'{self.css_path}/vars.css') as f:
+        #     st.html(f'<style>{f.read()}</style>')
+        # with open(f'{self.css_path}/style.css') as f:
+        #     st.html(f'<style>{f.read()}</style>')
+        # with open(f'{self.css_path}/navigation_style.css') as f:
+        #     st.html(f'<style>{f.read()}</style>')
+        # with open(f'{self.css_path}/texts_style.css') as f:
+        #     st.html(f'<style>{f.read()}</style>')
 
     def load_js(self):
         html(
@@ -97,6 +98,6 @@ st.set_page_config(layout='wide')
 
 with st.spinner('loading, please wait...'):
     app = Main_page()
-    # app.load_css()
+    app.load_css()
     # app.load_js()
 

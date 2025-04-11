@@ -4,13 +4,13 @@ import hashlib
 import ast
 
 class UserModel(Database):
-    def __init__(self, login, password):
+    def __init__(self, login, password, email : str = '', roles : list = ['viewer']):
         super().__init__()
 
         self.username : str = login
         self.password : str = self.hash(password)
-        self.email : str = ''
-        self.roles : list = []
+        self.email = email
+        self.roles = roles
     
     def hash(self, pw) -> str:
         return hashlib.sha256(pw.encode(encoding="utf-32")).hexdigest()
@@ -38,6 +38,20 @@ class UserModel(Database):
         self.set_email(data[2])
         self.set_roles(ast.literal_eval(data[3]))
 
+    def insert_new_user(self):
+        try:
+            res = self.execute(f"""INSERT INTO {self.users_table} (username, email, password, roles)
+                VALUES (?, ?, ?, ?)
+                """, (self.username, self.email, self.password, "['viewer']"))
+            self.commit()
+            print(f'Utilisateur {self.username.capitalize()} créé avec succès')
+            self.set_roles(['viewer'])
+            return (self)
+        
+        except Exception as e:
+            print(f"Erreur : {e}")
+            return e
+        
     # Les getters
     def get_id(self):
         return self.id

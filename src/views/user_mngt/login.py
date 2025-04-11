@@ -5,14 +5,14 @@ import time
 st.title('Login page')
 
 
-with st.form("login_form"):
-    user = False
+with st.form(key="login_form"):
     st.write("Entrez vos identifiants")
-    login = st.text_input("login")
+    user = False
+    login = st.text_input("Nom d'utilisateur ou mail")
     passwd = st.text_input(label='Mot de passe', type="password")
 
     if st.form_submit_button('envoyer', use_container_width=True):
-        user = UserController().login(login, passwd)
+        user = UserController(login, passwd).login()
 
     #retour positif de la db
     if isinstance(user, dict):
@@ -25,6 +25,7 @@ with st.form("login_form"):
         else:
             st.write(f'Vous êtes connectés en mode dégradé : {persist[1]}')
         st.switch_page('src/views/home.py')
+
     # valeur par défault
     elif user is False:
         st.warning('Entrez un login et un mot de passe')

@@ -15,7 +15,7 @@ class Navigation:
         self.options_page    = st.Page("src/views/private/options.py", title="Options", icon=":material/settings:")
         self.admin_page      = st.Page("src/views/admin/admin.py", title="Admin", icon=":material/key:")
 
-        self.user_navigation()
+        # self.user_navigation()
         
     def user_navigation(self):
 
