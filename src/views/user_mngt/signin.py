@@ -1,17 +1,11 @@
 import streamlit as st
 from src.controllers.user_controller import UserController
 from email.utils import parseaddr
-import re
-
-
+from src.utils.password import PasswordCheck
 
 def is_mail_valid(email):
     nom, adresse = parseaddr(email)
     return '@' in adresse and '.' in adresse.split('@')[-1]
-
-def is_password_strong(password):
-    passwd_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,22}$'
-    return isinstance(re.fullmatch(passwd_regex, password), re.Match)
 
 def create_username_from_mail(email):
     return email.split('@')[0]
@@ -38,7 +32,7 @@ def load():
                     st.warning('Entrez une adresse mail valide')
                 elif not password:
                     st.warning('Entrez un mot de passe')
-                elif not is_password_strong(password):
+                elif not PasswordCheck(password).is_password_strong():
                     st.warning("Le mot de passe n'est pas assez fort")
                 elif password != verif:
                     st.warning('Les mots de passes ne correspondent pas')

@@ -32,6 +32,36 @@ class UserModel(Database):
         except Exception as response:
             return f"Erreur : {response}"
 
+    def check_user_pwd(self):
+        try:
+            response = self.execute(
+                f"""
+                SELECT id
+                FROM {self.users_table}
+                WHERE {self.users_table}.email = ? AND {self.users_table}.password = ?""",
+                (self.username, self.password)).fetchone()
+            if response:
+                return response
+            return None # "Mot de asse invalide"
+        
+        except Exception as e:
+            return f"Erreur : {e}"
+            
+    def update_password(self, new_pwd):
+        try:
+            self.execute(
+                f"""
+                UPDATE {self.users_table}
+                SET password = ?
+                WHERE email = ?""", 
+                (self.hash(new_pwd), self.username)
+            )
+            self.commit()
+            return (True,)
+
+        except Exception as e:
+            return False, e
+
     def update_user_from_db_values(self, data):
         self.set_id(data[0])
         self.set_username(data[1])

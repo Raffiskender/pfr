@@ -30,3 +30,13 @@ class UserController:
             del new_user
             return True,
         else: return False, new_user # as an error
+
+    def change_pwd(self, new_pwd):
+        with UserModel(self.username, self.password) as db:
+            user_id = db.check_user_pwd()
+            if isinstance(user_id, tuple) and  user_id[0] == st.session_state['user']['id']:
+                return db.update_password(new_pwd)
+            
+            else : 
+                return False, user_id # as an error
+

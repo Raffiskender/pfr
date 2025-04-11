@@ -37,7 +37,6 @@ class SessionController:
     
     def logout(self):
         st.session_state['user'] = None
-        print("from session_controler : sst_User : ", st.session_state['user'])
         self.remove_user_cookie()
         
     def remove_user_cookie(self):
